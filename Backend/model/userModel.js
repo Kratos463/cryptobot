@@ -6,7 +6,7 @@ const saltRounds = 10;
 const userSchema = new mongoose.Schema(
 
     {
-        fullName: {
+        fullname: {
             type: String,
             required: true,
             trim: true,
@@ -31,31 +31,7 @@ const userSchema = new mongoose.Schema(
             }
 
         },
-        phone: {
-            type: String,
-            required: true,
-
-        },
-        country: {
-            type: String,
-            required: true,
-        },
-        state: {
-            type: String,
-            required: true,
-        },
-        idFront: {
-            type: String,
-            required: false,
-        },
-        idBack: {
-            type: String,
-            required: false,
-        },
-        dateOfBirth: {
-            type: Date,
-            required: true
-        },
+      
          emailVerified: {
             type: Boolean,
             default: false,

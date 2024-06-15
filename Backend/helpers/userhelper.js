@@ -8,28 +8,24 @@ const nodemailer = require('nodemailer');
 //------------validate user input---------------
 
 const validateUserInput = (userData) => {
-  
-
     const {
-        fullName, email, password, dateOfBirth, phone, country, state } = userData;
+        fullName, email, password } = userData;
     if
-        ([fullName, email, password, dateOfBirth, phone, country, state].some(field => !field?.trim())) {
+        ([fullName, email, password].some(field => !field?.trim())) {
         throw new ApiError(400, "All fields are required");
     }
 }
 
 // -----------Check the user exists--------------
 
-const checkUserExists = async (fullName, email) => {
-
+const checkUserExists = async (fullname, email) => {
     const existedUser = await User.findOne({
-        $or: [{ fullName }, { email }]
+        $or: [{ fullname }, { email }]
     }).lean().exec();
-    if (existedUser) {
-        throw new ApiError(409, "User with email or username already exists");
-    }
-
+    
+    return existedUser !== null;
 }
+
 
 
 // -----------Save new user to Database------------
@@ -63,18 +59,18 @@ function generateVerificationToken() {
 
 // -------sending verification email----------
 
-const sendVerificationEmail =async(email,verificationToken)=>{
-// creating node mailer transport
+const sendVerificationEmail = async (email, verificationToken) => {
+    // creating node mailer transport
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 587,
-        secure: false, 
+        secure: false,
         auth: {
-            user: process.env.GMAIL_USER, 
+            user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PASS
         }
     });
-// sending verification email
+    // sending verification email
     let info = await transporter.sendMail({
         from: '"Cryptobot" noreply@shopatrno.com',
         to: email,
@@ -109,5 +105,5 @@ module.exports = {
     getCreatedUser,
     generateVerificationToken,
     sendVerificationEmail,
-    
+
 }
