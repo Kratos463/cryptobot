@@ -87,6 +87,7 @@ function Register() {
         return () => clearInterval(interval); // Clean up interval on component unmount
     }, [user.email]);
 
+
     const handleSubmit = async (event) => {
         console.log("button submit")
         event.preventDefault();
@@ -120,6 +121,11 @@ function Register() {
             });
 
             if (response.ok) {
+                const data = await response.json();
+            const { user, token } = data;
+
+                // Store token in localStorage or sessionStorage
+                localStorage.setItem('token', token);
                 toast.success('Registration successful!');
             } else {
                 toast.error('Registration failed. Please try again later.');
