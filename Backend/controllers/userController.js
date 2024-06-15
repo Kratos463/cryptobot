@@ -2,6 +2,8 @@ const asyncHandler = require('express-async-handler');
 const User = require('../model/userModel')
 const ApiResponse = require('../utils/ApiResponse')
 const temporaryUserStore = require('../helpers/temporaryUserStore')
+const jwt = require('jsonwebtoken');
+
 const {
     validateUserInput,
     checkUserExists,
@@ -26,31 +28,53 @@ const Emailverification = asyncHandler(async (req, res) => {
 // -------------------User Registration------------------------------
 
 const registerUser = asyncHandler(async (req, res) => {
+
     const { fullname, email, password } = req.body;
+
     const userExists = await checkUserExists(fullname, email);
+    
 
     if (userExists) {
+        
         return res.status(400).json({ message: "User with email or username already exists" });
     }
-
     const userVerified = Array.from(temporaryUserStore.values()).find(user => user.email === email && user.verified);
+   
 
     if (!userVerified) {
         return res.status(400).json({ message: 'Email not verified. Please verify your email before registering.' });
     }
+    let createdUser;
+    try {
+        createdUser = await User.create({ fullname, email, password, emailVerified: true });
+      
 
-    const createdUser = await User.create({ fullname, email, password, emailVerified: true });
-    console.log(createdUser);
+    } catch (error) {
+        console.error('Error creating user:', error);
+        return res.status(500).json({ message: 'Failed to register user. Please try again later.' });
+    }
 
-    // Clean up the temporary store
     for (const [token, user] of temporaryUserStore.entries()) {
         if (user.email === email) {
             temporaryUserStore.delete(token);
         }
     }
 
-    res.status(201).json(new ApiResponse(200, 'User registered successfully.', createdUser));
+    // Generate JWT token
+    const token = jwt.sign(
+        { userId: createdUser._id, email: createdUser.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' } // Token expiration time
+    );
+
+    
+    res.status(201).json({
+        message: 'User registered successfully.',
+        user: createdUser,
+        token: token
+    });
 });
+
 
 
 // ----------------email verification-----------------
