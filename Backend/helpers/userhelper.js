@@ -59,7 +59,7 @@ function generateVerificationToken() {
 
 // -------sending verification email----------
 
-const sendVerificationEmail = async (email, verificationToken) => {
+const   sendVerificationEmail = async (email, verificationToken) => {
     // creating node mailer transport
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
@@ -80,10 +80,10 @@ const sendVerificationEmail = async (email, verificationToken) => {
         <p>Dear User,</p>
         <p>Thank you for registering. Please verify your email address by clicking the button below:</p>
         <p style="text-align: center;">
-            <a href="http://localhost:8001/verify-email?token=${verificationToken}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #ffffff; background-color: #4CAF50; text-decoration: none; border-radius: 5px;">Verify Email</a>
+        <a href="http://localhost:3000/Registration/VerifyEmailPage?token=${verificationToken}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #ffffff; background-color: #4CAF50; text-decoration: none; border-radius: 5px;">Verify Email</a>
         </p>
         <p>If the button above doesn't work, copy and paste the following link into your web browser:</p>
-        <p style="word-wrap: break-word;"><a href="http://localhost:8001/verify-email?token=${verificationToken}" style="color: #4CAF50;">http://localhost:8001/verify-email?token=${verificationToken}</a></p>
+        <p style="word-wrap: break-word;"><a href="http://localhost:3000/Registration/VerifyEmailPage?token=${verificationToken}" style="color: #4CAF50;">http://localhost:8001/verify-email?token=${verificationToken}</a></p>
         <p>Best regards,<br>The CryptoBot Team</p>
         <hr style="border: 1px solid #4CAF50;">
         <p style="font-size: 12px; color: #777;">If you did not create an account, please ignore this email.</p>

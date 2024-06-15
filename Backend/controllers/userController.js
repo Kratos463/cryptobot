@@ -87,16 +87,26 @@ const verifyEmail = asyncHandler(async (req, res) => {
         if (!userData) {
             return res.status(404).json({ message: 'Invalid or expired verification token' });
         }
-        // after verification changing the  email verified to true
+
+        
         userData.verified = true;
         temporaryUserStore.set(token, userData);
-        return res.status(200).json({ message: 'Email verified successfully, user created.' });
+        const styledMessage = `
+      <div style="background-color: #f0f0f0; padding: 20px; text-align: center; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h2 style="color: #4CAF50; font-size: 22px; margin-bottom: 10px;">Email Verified Successfully</h2>
+        <p style="font-size: 16px; line-height: 1.5;"> You can now proceed to log in.</p>
+      </div>
+    `;
+
+    return res.status(200).json({ message: styledMessage });
 
     } catch (error) {
         console.error('Error verifying email:', error);
         return res.status(500).json({ message: 'Internal server error' });
     }
 });
+
+
 
 
 // -------------------Check email verification--------------------------
