@@ -5,6 +5,7 @@ const temporaryUserStore = require('../helpers/temporaryUserStore')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
+
 const {
     validateUserInput,
     checkUserExists,
@@ -12,6 +13,7 @@ const {
     getCreatedUser,
     generateVerificationToken,
     sendVerificationEmail,
+    verifyToken,
 } = require('../helpers/userhelper');
 
 // -----------sending email vericafication----------
@@ -124,21 +126,17 @@ const checkEmail = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async(req,res)=>{
 
     const { email, password } = req.body;
-
     const user = await User.findOne({ email });
     if (!user) {
         return res.status(401).json({ message: 'Invalid email or password' });
     }
-
     if (!user.emailVerified) {
         return res.status(401).json({ message: 'Please verify your email before logging in' });
     }
-
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
         return res.status(401).json({ message: 'Invalid email or password' });
     }
-
     // Generate JWT token
     const token = jwt.sign(
         { userId: user._id, email: user.email },
@@ -150,11 +148,33 @@ const loginUser = asyncHandler(async(req,res)=>{
 });
 
 
+// -------------fetching user Data--------------
+
+const userData = asyncHandler(async(req,res)=>{
+    try {
+       
+        verifyToken(req, res, async () => {
+            const user = await User.findOne({ email: req.user.email });
+
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            res.json(user);
+        });
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+})
+
+
 
 module.exports = {
     registerUser,
     verifyEmail,
     Emailverification,
     checkEmail,
-    loginUser
+    loginUser,
+    userData
 }
