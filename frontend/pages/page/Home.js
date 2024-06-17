@@ -1,12 +1,15 @@
 import React from 'react'
+import withAuth from '../../HOC/withAuth';
+import Header from '../../components/User_Components/Header';
+
 
 function Home() {
   return (
-    <div>
-      <h1>home</h1>
-    </div>
+    <>
+    <Header/>
+    </>
   )
 }
 
-export default Home
+export default withAuth(Home);
 

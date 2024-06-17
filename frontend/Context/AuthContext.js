@@ -10,9 +10,33 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            setUser({ token });
+            fetchUserData(token); 
         }
-    }, []);
+    }, []); 
+
+    useEffect(() => {
+        
+    }, [user]); 
+
+    const fetchUserData = async (token) => {
+        try {
+            const response = await fetch('http://localhost:8001/user', {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                const userData = await response.json();
+                setUser(userData); 
+            } else {
+                throw new Error('Failed to fetch user data');
+            }
+        } catch (error) {
+            console.error('Fetch user data error:', error);
+        }
+    };
 
     const login = async (email, password) => {
         try {
@@ -28,7 +52,7 @@ export const AuthProvider = ({ children }) => {
 
             if (response.ok) {
                 localStorage.setItem('token', data.token);
-                setUser(data.user);
+                fetchUserData(data.token);
                 router.push('/page/Home');
             } else {
                 throw new Error(data.message);
@@ -45,8 +69,10 @@ export const AuthProvider = ({ children }) => {
         router.push('/login');
     };
 
+    const isAuthenticated = () => !!user;
+
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
             {children}
         </AuthContext.Provider>
     );
