@@ -14,9 +14,7 @@ export const AuthProvider = ({ children }) => {
         }
     }, []); 
 
-    useEffect(() => {
-        
-    }, [user]); 
+   
 
     const fetchUserData = async (token) => {
         try {
@@ -52,7 +50,8 @@ export const AuthProvider = ({ children }) => {
 
             if (response.ok) {
                 localStorage.setItem('token', data.token);
-                fetchUserData(data.token);
+                // fetchUserData(data.token);
+                setUser(data.user);
                 router.push('/page/Home');
             } else {
                 throw new Error(data.message);
@@ -63,10 +62,23 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        setUser(null);
-        router.push('/login');
+    const logout = async () => {
+        try {
+            
+            await fetch('http://localhost:8001/logout', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            localStorage.removeItem('token');
+            setUser(null);
+            router.push('/page/login'); 
+        } catch (error) {
+            console.error('Logout error:', error);
+            throw error;
+        }
     };
 
     const isAuthenticated = () => !!user;

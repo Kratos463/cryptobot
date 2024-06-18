@@ -8,10 +8,10 @@ import { AuthProvider } from "../Context/AuthContext";
 function MyApp({ Component, pageProps }) {
     return (
         <>
-        <AuthProvider>
-            <ToastContainer />
-            <Component {...pageProps} />
-        </AuthProvider>
+            <AuthProvider>
+                <Component {...pageProps} />
+                <ToastContainer />
+            </AuthProvider>
 
         </>
     );

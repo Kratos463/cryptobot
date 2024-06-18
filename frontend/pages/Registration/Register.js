@@ -4,7 +4,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { useRouter } from 'next/router';
-
+import Link from 'next/link';
 
 
 
@@ -158,7 +158,7 @@ function Register() {
             if (response.ok) {
                 const data = await response.json();
                 const { user } = data;
-                router.push('/page/Login')
+                router.push('/page/RegistrationSuccess')
                 toast.success('Registration successful! verification email send');
                 await handleVerifyEmail(user.email)
 
@@ -181,7 +181,7 @@ function Register() {
 
                     <p tabIndex={0} role="heading" aria-label="Login to your" className="text-xl font-extrabold leading-6 text-white text-center">Sign Up</p>
                     <p className="text-sm mt-4 font-medium leading-none text-gray-500 text-center mb-2">
-                        Already have an account? <span className="text-blue-500 cursor-pointer">Login</span>
+                        Already have an account? <Link href='/page/Login'><span className="text-blue-500 cursor-pointer">Login</span></Link>
                     </p>
 
 

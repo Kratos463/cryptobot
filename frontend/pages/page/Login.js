@@ -1,14 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../Context/AuthContext';
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
-import { toast, ToastContainer } from 'react-toastify';
+// import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
 
-
     const [showPassword, setShowPassword] = useState(false);
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { login } = useContext(AuthContext);
@@ -79,7 +79,7 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-            <ToastContainer />
+            {/* <ToastContainer /> */}
         </div>
     );
 }
