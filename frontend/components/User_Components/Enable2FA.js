@@ -6,7 +6,7 @@ import { FaCopy } from 'react-icons/fa';
 function Enable2FA() {
     const [code, setCode] = useState('');
     const [showSuccess, setShowSuccess] = useState(false);
-    const [secretKey, setSecretKey] = useState('ABCD-EFGH-IJKL-MNOP'); // Replace with your actual secret key
+    const [secretKey, setSecretKey] = useState('ABCD-EFGH-IJKL-MNOP'); 
 
     const handleCodeChange = (event) => {
         setCode(event.target.value);
@@ -23,27 +23,10 @@ function Enable2FA() {
     };
 
     return (
-        <div
-            className="fixed w-full h-full flex flex-col items-center justify-center"
-            style={{
-                backgroundColor: '#040408',
-                backgroundImage: 'url("/Assets/loginimage.jpg")',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                paddingTop: '60px',
-            }}
-        >
-            <div className="flex flex-col items-center mb-4">
-                <img
-                    src='/Assets/cryptobotLogo.png'
-                    alt='Cryptobot Logo'
-                    width={230}
-                    height={170}
-                />
-            </div>
+        <>
+           
 
-            <div className="flex flex-col items-center shadow rounded-lg lg:w-[50%] md:w-[70%] w-full p-8 mt-2 mb-6" style={{ backgroundColor: '#04043c' }}>
+            <div className="flex flex-col items-center shadow rounded-lg lg:w-[%] md:w-[85%] w-full p-8  mt-2 mb-6" style={{ backgroundColor: '#04043c' }}>
                 <h2 className="text-xl font-bold text-center mb-4 text-white">Enable 2-Factor Authentication</h2>
 
                 <div className="  font-[sans-serif] mb-6 flex justify-between flex-wrap w-full" style={{color:'#dfe8f5'}}>
@@ -91,7 +74,7 @@ function Enable2FA() {
                     </div>
                 )}
             </div>
-        </div>
+            </>
     );
 }
 

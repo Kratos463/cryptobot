@@ -12,7 +12,8 @@ module.exports = {
     extend: {
       width: {
         'custom-sidebar': '40%', // Custom width for the sidebar
-        'custom-register': '60%', // Custom width for the register
+        'custom-register': '60%',
+         // Custom width for the register
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
