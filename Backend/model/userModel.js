@@ -23,26 +23,54 @@ const userSchema = new mongoose.Schema(
             required: true,
             validate: {
                 validator: function (v) {
-                    // Password must be at least 8 characters long and contain at least one uppercase letter,
-                    // one lowercase letter, one special character, and one number
                     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d).{8,}$/.test(v);
                 },
                 message: props => `${props.value} is not a valid password. It must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one special character, and one number.`
             }
 
         },
-      
-         emailVerified: {
+
+        emailVerified: {
             type: Boolean,
             default: false,
         },
         verificationToken: {
             type: String,
         },
+        phone: {
+            type: String,
+        },
+        address: {
+            type: String,
+            trim: true,
+        },
+        country: {
+            type: String,
+            trim: true,
+        },
+        state: {
+            type: String,
+            trim: true,
+        },
+        city: {
+            type: String,
+            trim: true,
+        },
+        zipcode: {
+            type: String,
+        },
+        secretKey: {
+            type: String
+        },
+        is2FAEnabled:{
+            type: Boolean,
+            default: false,
+        } ,
         createdAt: {
-             type: Date,
-              default: Date.now,
-               expires: '1d' }
+            type: Date,
+            default: Date.now,
+            expires: '1d'
+        }
     }
 
 
