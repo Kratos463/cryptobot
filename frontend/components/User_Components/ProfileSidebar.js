@@ -10,7 +10,7 @@ import { IoSettings } from "react-icons/io5";
 const ProfileSidebar = () => {
     const router = useRouter();
 
-    // Define a function to determine if a link matches the current route
+   
     const isActive = (href) => {
         return router.pathname === href;
     };

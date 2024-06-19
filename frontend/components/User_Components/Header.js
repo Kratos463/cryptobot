@@ -4,14 +4,27 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../../Context/AuthContext';
+import Link from 'next/link';
 
 function Header() {
-    let arr = [true, false, false, false, false, false];
-    const [style, setStyle] = useState(arr);
+    const initialStyle = [true, false, false, false, false, false];
+    const [style, setStyle] = useState(initialStyle);
     const [dropDown, setDropDown] = useState(true);
     const [text, setText] = useState("");
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const { logout } = useContext(AuthContext);
+    const [selected, setSelected] = useState(null);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const handleItemClick = (index) => {
+        setSelected(index);
+        if (index === 4) {
+            setIsDropdownOpen(!isDropdownOpen);
+        } else {
+            setIsDropdownOpen(false);
+        }
+    };
+
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
@@ -31,12 +44,9 @@ function Header() {
         router.push('/Profile/ProfileDashboard');
     };
 
-    const selected = (props) => {
-        let newArr = [...arr];
-        for (let i = 0; i < newArr.length; i++) {
-            newArr[i] = false;
-        }
-        newArr[props] = true;
+    const selectMenuItem = (index) => {
+        let newArr = [...initialStyle];
+        newArr[index] = true;
         setStyle(newArr);
     };
 
@@ -53,11 +63,34 @@ function Header() {
                         <img src='/Assets/cryptobotLogo.png' alt='Cryptobot Logo' width={110} height={95} />
                     </div>
                     <ul className="hidden md:flex flex-auto space-x-2 pl-48 pt-2">
-                        <li onClick={() => selected(0)} className={`${style[0] ? 'text-white' : 'text-gray-600'} cursor-pointer text-sm leading-5 pl-8`}>Home</li>
-                        <li onClick={() => selected(1)} className={`${style[1] ? 'text-white' : 'text-gray-600'} cursor-pointer text-sm leading-5 pl-4`}>Pricing</li>
-                        <li onClick={() => selected(2)} className={`${style[2] ? 'text-white' : 'text-gray-600'} cursor-pointer text-sm leading-5 pl-4`}>Learn</li>
-                        <li onClick={() => selected(3)} className={`${style[3] ? 'text-white' : 'text-gray-600'} cursor-pointer text-sm leading-5 pl-4`}>Company</li>
-                        <li onClick={() => selected(4)} className={`${style[4] ? 'text-white' : 'text-gray-600'} cursor-pointer text-sm leading-5 pl-4`}>Settings</li>
+                        <li onClick={() => selectMenuItem(0)} className={`${style[0] ? 'text-white' : 'text-gray-600'} cursor-pointer text-sm leading-5 pl-8`}>Home</li>
+                        <li onClick={() => selectMenuItem(1)} className={`${style[1] ? 'text-white' : 'text-gray-600'} cursor-pointer text-sm leading-5 pl-4`}>Pricing</li>
+                        <li onClick={() => selectMenuItem(2)} className={`${style[2] ? 'text-white' : 'text-gray-600'} cursor-pointer text-sm leading-5 pl-4`}>Learn</li>
+                        <li onClick={() => selectMenuItem(3)} className={`${style[3] ? 'text-white' : 'text-gray-600'} cursor-pointer text-sm leading-5 pl-4`}>Company</li>
+                        <li
+                            onClick={() => handleItemClick(4)}
+                            className={`${selected === 4 ? 'text-white' : 'text-gray-600'} cursor-pointer text-sm leading-5 pl-4 relative`}
+                        >
+                            Settings
+                            {isDropdownOpen && (
+                                <ul className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
+                                    <li  className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
+                                        Exchange 
+                                    </li>
+                                    <Link href='/apiconfig'>
+                                    <li className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
+                                        API Configuration
+                                    </li>
+                                    </Link>
+                                    <li className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
+                                        Strategy
+                                    </li>
+                                    <li className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
+                                        CryptoPair
+                                    </li>
+                                </ul>
+                            )}
+                        </li>
                     </ul>
                     <div className="flex space-x-5 justify-center items-center pl-2">
                         <div className="relative cursor-pointer">
@@ -88,7 +121,7 @@ function Header() {
                 </nav>
                 <div className="block md:hidden w-full mt-5">
                     <div onClick={() => setDropDown(!dropDown)} className="cursor-pointer px-4 py-3 text-white bg-indigo-600 rounded flex justify-between items-center w-full">
-                        <div className="flex space-x-2">
+                    <div className="flex space-x-2">
                             <span id="s1" className={`${text.length !== 0 ? '' : 'hidden'} font-semibold text-sm leading-3`}>Selected: </span><p id="textClicked" className="font-normal text-sm leading-3">{text ? text : "Headers"}</p>
                         </div>
                         <svg id="ArrowSVG" className={`${dropDown ? '' : 'rotate-180'} transform duration-100`} width={24} height={24} viewBox="0 0 24 24" fill="none">
@@ -111,3 +144,4 @@ function Header() {
 }
 
 export default Header;
+
