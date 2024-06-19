@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const ApiKey = require('../model/apiKey');
+const ApiKey = require('../model/exchangeConfigModel');
 
 const Apikeysave = asyncHandler(async (req, res) => {
     console.log("its reached here....", req.user);

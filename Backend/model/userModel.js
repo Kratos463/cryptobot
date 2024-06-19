@@ -1,81 +1,77 @@
-const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const saltRounds = 10;
 
-const userSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema({
+    fullname: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    email: {
+        type: String,
+        required: true,
+        trim: true,
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: true,
+        validate: {
+            validator: function (v) {
+                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d).{8,}$/.test(v);
+            },
+            message: props => `${props.value} is not a valid password. It must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one special character, and one number.`,
+        },
+    },
+    emailVerified: {
+        type: Boolean,
+        default: false,
+    },
+    verificationToken: {
+        type: String,
+    },
+    phone: {
+        type: String,
+    },
+    address: {
+        type: String,
+        trim: true,
+    },
+    country: {
+        type: String,
+        trim: true,
+    },
+    state: {
+        type: String,
+        trim: true,
+    },
+    city: {
+        type: String,
+        trim: true,
+    },
+    zipcode: {
+        type: String,
+    },
+    secretKey: {
+        type: String,
+    },
+    is2FAEnabled: {
+        type: Boolean,
+        default: false,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+        expires: '1d',
+    },
+    bots: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Bot',
+    }],
+});
 
-    {
-        fullname: {
-            type: String,
-            required: true,
-            trim: true,
-
-        },
-        email: {
-            type: String,
-            required: true,
-            trim: true,
-            unique: true,
-        },
-        password: {
-            type: String,
-            required: true,
-            validate: {
-                validator: function (v) {
-                    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d).{8,}$/.test(v);
-                },
-                message: props => `${props.value} is not a valid password. It must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one special character, and one number.`
-            }
-
-        },
-
-        emailVerified: {
-            type: Boolean,
-            default: false,
-        },
-        verificationToken: {
-            type: String,
-        },
-        phone: {
-            type: String,
-        },
-        address: {
-            type: String,
-            trim: true,
-        },
-        country: {
-            type: String,
-            trim: true,
-        },
-        state: {
-            type: String,
-            trim: true,
-        },
-        city: {
-            type: String,
-            trim: true,
-        },
-        zipcode: {
-            type: String,
-        },
-        secretKey: {
-            type: String
-        },
-        is2FAEnabled:{
-            type: Boolean,
-            default: false,
-        } ,
-        createdAt: {
-            type: Date,
-            default: Date.now,
-            expires: '1d'
-        }
-    }
-
-
-
-)
 // Middleware to hash the password before saving
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
@@ -90,7 +86,5 @@ userSchema.pre('save', async function (next) {
     }
 });
 
-
-
-const user = mongoose.model('User', userSchema)
-module.exports = user;
+const User = mongoose.model('User', userSchema);
+module.exports = User;

@@ -142,7 +142,7 @@ const loginUser = asyncHandler(async(req,res)=>{
     const token = jwt.sign(
         { userId: user._id, email: user.email },
         process.env.JWT_SECRET,
-        { expiresIn: '1h' } // Token expiration time
+        { expiresIn: '1d' } // Token expiration time
     );
 
     res.status(200).json({ token, user });
@@ -154,15 +154,14 @@ const loginUser = asyncHandler(async(req,res)=>{
 
 const userData = (req, res) => {
     console.log(req.user)
-    const userId = req.user.userId; // Assuming your JWT payload includes 'userId'
+    const userId = req.user.userId; 
 
-    // Example: Fetch user data from database
-    User.findById(userId)
+        User.findById(userId)
         .then(user => {
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
-            res.json(user); // Return user data as JSON response
+            res.json(user); 
         })
         .catch(err => {
             console.error('Error fetching user data:', err);
@@ -170,23 +169,6 @@ const userData = (req, res) => {
         });
     }
 
-// const userData = asyncHandler(async(req,res)=>{
-//     try {
-       
-//         verifyToken(req, res, async () => {
-//             const user = await User.findOne({ email: req.user.email });
-
-//             if (!user) {
-//                 return res.status(404).json({ message: 'User not found' });
-//             }
-
-//             res.json(user);
-//         });
-//     } catch (error) {
-//         console.error('Error fetching user data:', error);
-//         return res.status(500).json({ message: 'Internal server error' });
-//     }
-// })
 
 
 // ------------Logout----------------

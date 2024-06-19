@@ -1,11 +1,16 @@
 const mongoose = require('mongoose');
 
-const apiKeySchema = new mongoose.Schema({
+const exchangeConfig = new mongoose.Schema({
     userId:
     {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
+    },
+    exchangeName:
+    {
+        type:String,
+        required:true
     },
 
     apiKey:
@@ -20,4 +25,4 @@ const apiKeySchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('ApiKey', apiKeySchema);
+module.exports = mongoose.model('ExchangeConfig', exchangeConfig);
