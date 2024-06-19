@@ -1,22 +1,24 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../Context/AuthContext';
 
 const withAuth = (WrappedComponent) => {
     return (props) => {
-        const { isAuthenticated } = useContext(AuthContext);
+        const { isAuthenticated, loading } = useContext(AuthContext);
         const router = useRouter();
 
         useEffect(() => {
-            if (!isAuthenticated()) {
+            if (!loading && !isAuthenticated()) {
                 router.replace('/page/Login');
-            } else {
-                router.replace('/page/Home'); 
             }
-        }, [isAuthenticated, router]);
+        }, [loading, isAuthenticated, router]);
+
+        if (loading) {
+            return <div>Loading...</div>;
+        }
 
         if (!isAuthenticated()) {
-            return null;
+            return null; 
         }
 
         return <WrappedComponent {...props} />;

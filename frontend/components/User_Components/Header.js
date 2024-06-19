@@ -77,7 +77,7 @@ function Header() {
                                     <li  className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
                                         Exchange 
                                     </li>
-                                    <Link href='/apiconfig'>
+                                    <Link href='/page/apiconfig'>
                                     <li className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
                                         API Configuration
                                     </li>

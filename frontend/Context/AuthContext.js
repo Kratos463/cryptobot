@@ -5,20 +5,21 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
     const router = useRouter();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            fetchUserData(token); 
+            fetchUserData(token);
+        } else {
+            setLoading(false); 
         }
-    }, []); 
-
-   
+    }, []);
 
     const fetchUserData = async (token) => {
         try {
-            const response = await fetch('http://localhost:8001/user', {
+            const response = await fetch('http://localhost:8001/userData', {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -27,12 +28,14 @@ export const AuthProvider = ({ children }) => {
 
             if (response.ok) {
                 const userData = await response.json();
-                setUser(userData); 
+                setUser(userData);
             } else {
                 throw new Error('Failed to fetch user data');
             }
         } catch (error) {
             console.error('Fetch user data error:', error);
+        } finally {
+            setLoading(false); // Set loading to false after fetching
         }
     };
 
@@ -50,7 +53,6 @@ export const AuthProvider = ({ children }) => {
 
             if (response.ok) {
                 localStorage.setItem('token', data.token);
-                // fetchUserData(data.token);
                 setUser(data.user);
                 router.push('/page/Home');
             } else {
@@ -64,7 +66,6 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            
             await fetch('http://localhost:8001/logout', {
                 method: 'POST',
                 headers: {
@@ -74,7 +75,7 @@ export const AuthProvider = ({ children }) => {
 
             localStorage.removeItem('token');
             setUser(null);
-            router.push('/page/login'); 
+            router.push('/page/login');
         } catch (error) {
             console.error('Logout error:', error);
             throw error;
@@ -84,7 +85,7 @@ export const AuthProvider = ({ children }) => {
     const isAuthenticated = () => !!user;
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
+        <AuthContext.Provider value={{ user, login, logout, isAuthenticated, loading }}>
             {children}
         </AuthContext.Provider>
     );
