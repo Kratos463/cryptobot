@@ -2,19 +2,16 @@ const mongoose = require('mongoose');
 
 const CryptoPairSchema = new Schema({
 
-    pairName:
-    {
+    pairName:{
         type: String,
         required: true
     },
-    exchangeConfig:
-    {
+    exchangeConfig:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ExchangeConfig',
         required: true
     },
-    user:
-    {
+    user:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true

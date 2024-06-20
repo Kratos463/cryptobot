@@ -1,25 +1,20 @@
 const mongoose = require('mongoose');
 
 const exchangeConfig = new mongoose.Schema({
-    userId:
-    {
+    userId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
-    exchangeName:
-    {
+    exchangeName:{
         type:String,
         required:true
     },
-
-    apiKey:
-    {
+    apiKey:{
         type: String,
         required: true
     },
-    apiSecret:
-    {
+    apiSecret:{
         type: String,
         required: true
     },

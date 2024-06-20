@@ -10,7 +10,7 @@ const { registerUser,
        updateUserProfile
 } = require('../controllers/userController')
 
-const {Apikeysave} = require('../controllers/apikeyController')
+const {Apikeysave} = require('../controllers/exchangeconfigController')
 
 const router = Router();
 
@@ -23,7 +23,7 @@ router.get('/userData', verifyToken, userData)
 router.post('/logout', logout)
 router.put('/update_user/:id', updateUserProfile);
 
-router.post('/apikeysave', verifyToken,Apikeysave)
+router.post('/exchangeconfiguration', verifyToken,Apikeysave)
 
 
 
