@@ -3,14 +3,17 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'tailwindcss/tailwind.css';
 import { AuthProvider } from "../Context/AuthContext";
+import { ExchangeProvider } from "../Context/ExchangeContext";
 
 
 function MyApp({ Component, pageProps }) {
     return (
         <>
             <AuthProvider>
-                <Component {...pageProps} />
-                <ToastContainer />
+                <ExchangeProvider>
+                    <Component {...pageProps} />
+                    <ToastContainer />
+                </ExchangeProvider>
             </AuthProvider>
 
         </>
