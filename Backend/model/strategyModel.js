@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const StrategySchema = new Schema({
+const StrategySchema = new mongoose.Schema({
 
     user:{
         type: mongoose.Schema.Types.ObjectId,

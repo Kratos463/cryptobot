@@ -11,6 +11,7 @@ const { registerUser,
 } = require('../controllers/userController')
 
 const {Apikeysave} = require('../controllers/exchangeconfigController')
+const {saveCryptoPair}= require('../controllers/cryptoPairController')
 
 const router = Router();
 
@@ -24,6 +25,7 @@ router.post('/logout', logout)
 router.put('/update_user/:id', updateUserProfile);
 
 router.post('/exchangeconfiguration', verifyToken,Apikeysave)
+router.post('/savecryptopair',verifyToken,saveCryptoPair)
 
 
 

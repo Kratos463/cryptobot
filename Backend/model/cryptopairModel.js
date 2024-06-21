@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const CryptoPairSchema = new Schema({
+const CryptoPairSchema = new mongoose.Schema({
 
     pairName:{
         type: String,
