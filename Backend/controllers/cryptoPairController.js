@@ -1,6 +1,35 @@
 const asyncHandler = require('express-async-handler');
 const CryptoPair = require('../model/cryptopairModel'); 
 const ExchangeConfig = require('../model/exchangeConfigModel');
+const axios = require('axios');
+
+const getCryptoPairs = async () => {
+    try {
+        const response = await axios.get('https://api.bybit.com/v2/public/symbols');
+        if (response.data && response.data.result) {
+            return response.data.result.map(symbol => ({
+                name: symbol.name,
+                baseCurrency: symbol.base_currency,
+                quoteCurrency: symbol.quote_currency,
+                status: symbol.status
+            }));
+        } else {
+            console.error('No data found in response');
+            return [];
+        }
+    } catch (error) {
+        console.error('Error fetching trading pairs:', error);
+        return [];
+    }
+};
+
+// getCryptoPairs().then(pairs => console.log(pairs));
+
+
+
+
+
+// -----------Saving the crypto pair selected by user---------------------
 
 const saveCryptoPair = asyncHandler(async (req, res) => {
     const { pairName, exchangeConfigId } = req.body;

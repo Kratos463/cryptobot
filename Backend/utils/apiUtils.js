@@ -3,6 +3,7 @@ const crypto = require('crypto');
 
 const apiBaseUrl = 'https://api-testnet.bybit.com';
 
+
 const testBybitApiConnection = async (apiKey, apiSecret) => {
     try {
         const timestamp = Date.now().toString();

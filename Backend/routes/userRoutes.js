@@ -10,8 +10,11 @@ const { registerUser,
        updateUserProfile
 } = require('../controllers/userController')
 
-const {Apikeysave} = require('../controllers/exchangeconfigController')
-const {saveCryptoPair}= require('../controllers/cryptoPairController')
+const { Apikeysave,
+       getApiconfig
+} = require('../controllers/exchangeconfigController')
+const { saveCryptoPair } = require('../controllers/cryptoPairController')
+const {getAccountBalance} = require('../controllers/accountController')
 
 const router = Router();
 
@@ -24,8 +27,10 @@ router.get('/userData', verifyToken, userData)
 router.post('/logout', logout)
 router.put('/update_user/:id', updateUserProfile);
 
-router.post('/exchangeconfiguration', verifyToken,Apikeysave)
-router.post('/savecryptopair',verifyToken,saveCryptoPair)
+router.post('/exchangeconfiguration', verifyToken, Apikeysave)
+router.post('/savecryptopair', verifyToken, saveCryptoPair)
+router.post('/accountbalance', verifyToken, getAccountBalance)
+
 
 
 

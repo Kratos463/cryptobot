@@ -142,7 +142,7 @@ const loginUser = asyncHandler(async(req,res)=>{
     const token = jwt.sign(
         { userId: user._id, email: user.email },
         process.env.JWT_SECRET,
-        { expiresIn: '1d' } // Token expiration time
+        { expiresIn: '7d' } // Token expiration time
     );
 
     res.status(200).json({ token, user });
@@ -153,7 +153,7 @@ const loginUser = asyncHandler(async(req,res)=>{
 
 
 const userData = (req, res) => {
-    console.log(req.user)
+   
     const userId = req.user.userId; 
 
         User.findById(userId)

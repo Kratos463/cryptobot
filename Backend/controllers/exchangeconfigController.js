@@ -37,6 +37,25 @@ const Apikeysave = asyncHandler(async (req, res) => {
     }
 });
 
+
+
+
+const getApiconfig =asyncHandler(async(req,res)=>{
+    const { userId, exchangeName } = req.body;
+
+    try {
+        const config = await ExchangeConfig.findOne({ userId, exchangeName });
+        if (!config) {
+            return res.status(404).json({ error: 'Exchange configuration not found' });
+        }
+        res.json(config);
+    } catch (err) {
+        console.error('Error fetching exchange configuration:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+})
+
 module.exports = {
-    Apikeysave
+    Apikeysave,
+    getApiconfig
 };
