@@ -75,24 +75,29 @@ function Header() {
                             {isDropdownOpen && (
                                 <ul className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
                                     <Link href='/page/ExchangeSelection'>
-                                    <li  className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
-                                        Exchange 
-                                    </li>
+                                        <li className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
+                                            Exchange
+                                        </li>
                                     </Link>
                                     <Link href='/page/apiconfig'>
-                                    <li className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
-                                        API Configuration
-                                    </li>
+                                        <li className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
+                                            API Configuration
+                                        </li>
+                                    </Link>
+                                    <Link href='/page/CreateBot'>
+                                        <li className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
+                                            Create Bot
+                                        </li>
                                     </Link>
                                     <Link href='/page/StrategySelection'>
-                                    <li className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
-                                        Strategy
-                                    </li>
+                                        <li className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
+                                            Strategy
+                                        </li>
                                     </Link>
                                     <Link href='/page/CryptoPairs'>
-                                    <li className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
-                                        CryptoPair
-                                    </li>
+                                        <li className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
+                                            CryptoPair
+                                        </li>
                                     </Link>
                                 </ul>
                             )}
@@ -127,7 +132,7 @@ function Header() {
                 </nav>
                 <div className="block md:hidden w-full mt-5">
                     <div onClick={() => setDropDown(!dropDown)} className="cursor-pointer px-4 py-3 text-white bg-indigo-600 rounded flex justify-between items-center w-full">
-                    <div className="flex space-x-2">
+                        <div className="flex space-x-2">
                             <span id="s1" className={`${text.length !== 0 ? '' : 'hidden'} font-semibold text-sm leading-3`}>Selected: </span><p id="textClicked" className="font-normal text-sm leading-3">{text ? text : "Headers"}</p>
                         </div>
                         <svg id="ArrowSVG" className={`${dropDown ? '' : 'rotate-180'} transform duration-100`} width={24} height={24} viewBox="0 0 24 24" fill="none">
