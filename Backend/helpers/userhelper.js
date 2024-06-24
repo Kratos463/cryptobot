@@ -111,7 +111,6 @@ const verifyToken = (req, res, next) => {
             console.error('JWT Verification Error:', err);
             return res.status(403).json({ message: 'Invalid token' });
         }
-
         // console.log('Decoded Token:', decoded); 
         req.user = decoded;
 

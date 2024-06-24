@@ -11,7 +11,7 @@ const Apikeysave = asyncHandler(async (req, res) => {
         return res.status(400).json({ success: false, message: 'Exchange name, API key, and API secret are required' });
     }
 
-    const testResult = await getAccountInformation(apiKey, apiSecret);
+    const testResult = await testBybitApiConnection(apiKey, apiSecret);
     if (!testResult.success) {
         return res.status(400).json({ success: false, message: 'Failed to test Bybit API connection', error: testResult.message });
     }

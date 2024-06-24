@@ -3,11 +3,10 @@ const crypto = require('crypto');
 
 const apiBaseUrl = 'https://api-testnet.bybit.com';
 
-
 const testBybitApiConnection = async (apiKey, apiSecret) => {
     try {
         const timestamp = Date.now().toString();
-        const recvWindow = 20000;
+        const recvWindow = '20000';
         const signature = generateSignature(apiKey, apiSecret, timestamp, recvWindow);
 
         const config = {
@@ -45,11 +44,15 @@ const testBybitApiConnection = async (apiKey, apiSecret) => {
 };
 
 function generateSignature(apiKey, apiSecret, timestamp, recvWindow) {
-    const paramStr = `api_key=${apiKey}&recv_window=${recvWindow}&timestamp=${timestamp}`;
+    const paramStr = `${timestamp}${apiKey}${recvWindow}`;
     const signature = crypto.createHmac('sha256', apiSecret).update(paramStr).digest('hex');
     return signature;
 }
 
+
 module.exports = {
     testBybitApiConnection
 };
+
+
+

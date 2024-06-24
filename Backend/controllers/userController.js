@@ -47,11 +47,11 @@ const registerUser = asyncHandler(async (req, res) => {
         console.error('Error creating user:', error);
         return res.status(500).json({ message: 'Failed to register user. Please try again later.' });
     }
-    for (const [token, user] of temporaryUserStore.entries()) {
-        if (user.email === email) {
-            temporaryUserStore.delete(token);
-        }
-    }
+    // for (const [token, user] of temporaryUserStore.entries()) {
+    //     if (user.email === email) {
+    //         temporaryUserStore.delete(token);
+    //     }
+    // }
    
 
     res.status(201).json({

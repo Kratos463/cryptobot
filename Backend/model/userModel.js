@@ -64,7 +64,7 @@ const userSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-        expires: '1d',
+        // expires: '1d',
     },
     bots: [{
         type: mongoose.Schema.Types.ObjectId,
