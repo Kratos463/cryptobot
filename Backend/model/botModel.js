@@ -2,6 +2,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const BotSchema = new Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    exchangeConfig: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ExchangeConfig',
+        required: true
+    },
     botName: {
         type: String,
         required: true
@@ -10,27 +20,17 @@ const BotSchema = new Schema({
         type: String,
 
     },
-    exchangeConfig: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'ExchangeConfig',
-        required: true
-    },
+ 
     cryptoPair: {
         type: String,
         required: true
     },
-    // strategy:{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Strategy',
-    //     required: true
-    // },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+    strategy: {
+        type: String
     },
-    Leverage:{
-        type:String,
+
+    Leverage: {
+        type: String,
     }
 });
 
