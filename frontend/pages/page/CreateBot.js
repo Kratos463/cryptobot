@@ -13,7 +13,6 @@ const CreateBot = () => {
     const [leverage, setLeverage] = useState(1);
     const { selectedExchange } = useExchangeContext();
     const exchangeName = selectedExchange;
-    const token = localStorage.getItem('token');
 
 
 
@@ -33,6 +32,7 @@ const CreateBot = () => {
     const fetchAccountBalance = async (pair) => {
         // formated for getting wallet balance
         const formattedPair = pair.replace(/(.{4})/g, '$1,').slice(0, -1);
+        const token = localStorage.getItem('token'); 
 
         try {
             const response = await axios.post('http://localhost:8001/walletbalance', {
@@ -76,7 +76,7 @@ const CreateBot = () => {
                 leverage: strategyType === 'Futures' ? leverage : 1,
             };
 
-
+            const token = localStorage.getItem('token'); 
             const response = await axios.post('http://localhost:8001/createbot', botData, {
                 headers: {
                     Authorization: `Bearer ${token}`
