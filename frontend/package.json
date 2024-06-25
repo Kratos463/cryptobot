@@ -19,6 +19,7 @@
     "react-router-dom": "^6.23.1",
     "react-toastify": "^10.0.5",
     "react-tooltip": "^5.26.4",
+    "shortid": "^2.2.16",
     "speakeasy": "^2.0.0"
   },
   "devDependencies": {

@@ -43,6 +43,9 @@ function Header() {
     const handleProfile = () => {
         router.push('/Profile/ProfileDashboard');
     };
+    const handleBot = () => {
+        router.push('/page/BotList');
+    };
 
     const selectMenuItem = (index) => {
         let newArr = [...initialStyle];
@@ -123,6 +126,7 @@ function Header() {
                                 <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                                     <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                                         <button onClick={handleProfile} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">Profile</button>
+                                        <button onClick={handleBot} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">My Bots</button>
                                         <button onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">Logout</button>
                                     </div>
                                 </div>

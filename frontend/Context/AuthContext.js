@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
     const fetchUserData = async (token) => {
         try {
-            const response = await fetch('http://localhost:8001/userData', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/userData`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const response = await fetch('http://localhost:8001/login', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await fetch('http://localhost:8001/logout', {
+            await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/logout`, {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,

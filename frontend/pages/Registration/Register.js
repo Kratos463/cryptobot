@@ -65,7 +65,7 @@ function Register() {
 
     const handleVerifyEmail = async () => {
         try {
-            const response = await fetch('http://localhost:8001/send-verification-email', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/send-verification-email`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -147,7 +147,7 @@ function Register() {
         }
 
         try {
-            const response = await fetch('http://localhost:8001/register', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

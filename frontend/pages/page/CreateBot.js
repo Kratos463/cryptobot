@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useExchangeContext } from '../../Context/ExchangeContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const CreateBot = () => {
     const [botName, setBotName] = useState('');
@@ -13,6 +15,7 @@ const CreateBot = () => {
     const [leverage, setLeverage] = useState(1);
     const { selectedExchange } = useExchangeContext();
     const exchangeName = selectedExchange;
+    const router = useRouter();
 
 
 
@@ -32,10 +35,10 @@ const CreateBot = () => {
     const fetchAccountBalance = async (pair) => {
         // formated for getting wallet balance
         const formattedPair = pair.replace(/(.{4})/g, '$1,').slice(0, -1);
-        const token = localStorage.getItem('token'); 
+        const token = localStorage.getItem('token');
 
         try {
-            const response = await axios.post('http://localhost:8001/walletbalance', {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/walletbalance`, {
                 exchangeName,
                 strategyType: strategyType,
                 accountType: "UNIFIED",// now its unified accounttype bcz testnet if the ,[for spot =>AccountType =SPOT,for futures =Contract]
@@ -56,7 +59,7 @@ const CreateBot = () => {
 
     const fetchCryptoPairs = async () => {
         try {
-            const response = await axios.get('https://api.bybit.com/v2/public/symbols');
+            const response = await axios.get(process.env.NEXT_PUBLIC_BYBIT_API);
             setCryptoPairs(response.data.result);
         } catch (error) {
             console.error('Error fetching crypto pairs:', error);
@@ -76,13 +79,16 @@ const CreateBot = () => {
                 leverage: strategyType === 'Futures' ? leverage : 1,
             };
 
-            const token = localStorage.getItem('token'); 
-            const response = await axios.post('http://localhost:8001/createbot', botData, {
+            const token = localStorage.getItem('token');
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/createbot`, botData, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
             toast.success('Bot created successfully')
+            const userId = response.data.user;
+            const botId = response.data._id;
+            router.push(`/page/GetWebhookurl?userId=${userId}&botId=${botId}`)
             // console.log('Bot created successfully:', response.data);
         } catch (error) {
             toast.error('Error creating Bot')
