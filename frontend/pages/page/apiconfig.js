@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import withAuth from '../../HOC/withAuth';
 import { useExchangeContext } from '../../Context/ExchangeContext';
+import Link from 'next/link';
 
 
 const apiconfig = () => {
@@ -104,6 +105,7 @@ const exchangeName = selectedExchange;
                     </div>
 
                     <div className="mt-6">
+                        <Link href='/page/CreateBot'>
                         <button
                             onClick={handleSave}
                             role="button"
@@ -111,6 +113,7 @@ const exchangeName = selectedExchange;
                             className="focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 text-sm font-semibold leading-none text-white focus:outline-none bg-blue-700  rounded hover:bg-indigo-600 py-4 w-full" style={{ backgroundColor: '#0086c9', border: '1px solid #043bbc' }}>
                             Save
                         </button>
+                        </Link>
                     </div>
                 </div>
             </div>
