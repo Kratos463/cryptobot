@@ -2,33 +2,35 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const BotSchema = new Schema({
-    botName:{
+    botName: {
         type: String,
         required: true
     },
-    webhookUrl:{
+    webhookUrl: {
         type: String,
-        required: true
+
     },
-    exchangeConfig:{
+    exchangeConfig: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ExchangeConfig',
         required: true
     },
-    cryptoPair:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'CryptoPair',
+    cryptoPair: {
+        type: String,
         required: true
     },
-    strategy:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Strategy',
-        required: true
-    },
-    user:{
+    // strategy:{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Strategy',
+    //     required: true
+    // },
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
+    },
+    Leverage:{
+        type:String,
     }
 });
 

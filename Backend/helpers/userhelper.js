@@ -100,7 +100,8 @@ const   sendVerificationEmail = async (email, verificationToken) => {
 
 const verifyToken = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1]; 
-
+    
+   
     if (!token) {
         return res.status(401).json({ message: 'Unauthorized' });
     }
@@ -111,10 +112,10 @@ const verifyToken = (req, res, next) => {
             console.error('JWT Verification Error:', err);
             return res.status(403).json({ message: 'Invalid token' });
         }
-        // console.log('Decoded Token:', decoded); 
+        
         req.user = decoded;
-
-        next();
+          next();
+            
     });
 };
 

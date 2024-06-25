@@ -10,7 +10,8 @@ const findExchangeConfig = async (userId, exchangeName) => {
         }
         return {
             apiKey: config.apiKey,
-            apiSecret: config.apiSecret
+            apiSecret: config.apiSecret,
+            exchangeConfig:config._id.toString()
         };
     } catch (err) {
         console.error('Error fetching exchange configuration:', err);
