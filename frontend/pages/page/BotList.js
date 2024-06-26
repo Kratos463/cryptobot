@@ -10,7 +10,7 @@ function BotList() {
 
         const fetchBots = async () => {
             try {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/bots`, {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/bot/mybots`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }

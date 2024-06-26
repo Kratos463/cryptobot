@@ -38,7 +38,7 @@ const CreateBot = () => {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/walletbalance`, {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/account/walletbalance`, {
                 exchangeName,
                 strategyType: strategyType,
                 accountType: "UNIFIED",// now its unified accounttype bcz testnet if the ,[for spot =>AccountType =SPOT,for futures =Contract]
@@ -80,7 +80,7 @@ const CreateBot = () => {
             };
 
             const token = localStorage.getItem('token');
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/createbot`, botData, {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/bot/createbot`, botData, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

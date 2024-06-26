@@ -25,7 +25,7 @@ const exchangeName = selectedExchange;
     const handleSave = async () => {
         try {
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/exchangeconfiguration`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/exchange/exchangeconfiguration`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
