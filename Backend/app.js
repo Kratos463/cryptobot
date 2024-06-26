@@ -14,7 +14,8 @@ const userRoutes = require('./routes/userRoutes');
 const accountRoutes = require('./routes/accountRoutes');
 const exchangeRoutes = require('./routes/exchangeRoutes')
 const cryptopairRoutes = require('./routes/cryptopairRoutes')
-const botRoutes = require('./routes/botRoutes')
+const botRoutes = require('./routes/botRoutes');
+const tradeRoutes = require('./routes/tradeRoutes')
 
 // Use routes
 app.use('/', userRoutes);
@@ -22,6 +23,7 @@ app.use('/account', accountRoutes);
 app.use('/exchange',exchangeRoutes);
 app.use('/cryptopair',cryptopairRoutes);
 app.use('/bot',botRoutes);
+app.use('/webhook',tradeRoutes);
 
 
 module.exports = { app };

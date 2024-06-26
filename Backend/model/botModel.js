@@ -20,7 +20,12 @@ const BotSchema = new Schema({
         type: String,
 
     },
- 
+    orderQuantity: {
+        type: String,
+    },
+    orderType: {
+        type: String
+    },
     cryptoPair: {
         type: String,
         required: true

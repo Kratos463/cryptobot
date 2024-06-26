@@ -9,7 +9,8 @@ const ExchangeConfig = require('../model/exchangeConfigModel')
 const CreateBot = asyncHandler(async (req, res) => {
     const userId = req.user.userId;
     try {
-        const { botName, cryptoPair, strategy, exchangeName } = req.body;
+        const orderType = Market;
+        const { botName, cryptoPair, strategy, exchangeName,orderQuantity } = req.body;
         const {exchangeConfig } = await findExchangeConfig(userId, exchangeName);
 
         // Check if a bot with the same name already exists for this user
@@ -21,8 +22,10 @@ const CreateBot = asyncHandler(async (req, res) => {
         // Check if a bot with the same exchangeConfig, cryptoPair, and strategy already exists
         const existingBotByConfig = await Bot.findOne({
             exchangeConfig,
-            cryptoPair,
+            Symbol : cryptoPair,
             strategy,
+            orderType,
+            orderQuantity
         });
         if (existingBotByConfig) {
             return res.status(400).json({ error: 'Bot with same exchange, crypto pair, and strategy already exists' });
@@ -31,8 +34,10 @@ const CreateBot = asyncHandler(async (req, res) => {
         const newBot = new Bot({
             botName,
             exchangeConfig,
-            cryptoPair,
+            Symbol:cryptoPair,
             strategy,
+            orderType,
+            orderQuantity,
             user: userId,
         });
 
