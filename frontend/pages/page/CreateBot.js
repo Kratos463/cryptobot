@@ -13,6 +13,7 @@ const CreateBot = () => {
     const [cryptoPairs, setCryptoPairs] = useState([]);
     const [selectedPair, setSelectedPair] = useState('');
     const [leverage, setLeverage] = useState(1);
+    const [orderQty,setOrderQty] = useState('')
     const { selectedExchange } = useExchangeContext();
     const exchangeName = selectedExchange;
     const router = useRouter();
@@ -76,6 +77,7 @@ const CreateBot = () => {
                 exchangeName,
                 strategy: strategyType,
                 cryptoPair: selectedPair,
+                orderQuantity :orderQty,
                 leverage: strategyType === 'Futures' ? leverage : 1,
             };
 
@@ -110,7 +112,7 @@ const CreateBot = () => {
                                 placeholder="Bot Name"
                                 value={botName}
                                 onChange={(e) => setBotName(e.target.value)}
-                                className="mb-4 p-2 w-full text-black"
+                                className="mb-4 p-2 w-full text-black rounded"
                             />
                         </div>
                         <div className="mt-4">
@@ -118,7 +120,7 @@ const CreateBot = () => {
                             <select
                                 value={selectedPair}
                                 onChange={(e) => setSelectedPair(e.target.value)}
-                                className="mb-4 p-2 w-full text-black"
+                                className="mb-4 p-2 w-full text-black rounded"
                             >
                                 {cryptoPairs.map(pair => (
                                     <option key={pair.name} value={pair.name} className='text-black'>
@@ -169,6 +171,16 @@ const CreateBot = () => {
                                 </label>
                             </div>
                         )}
+                        <div className='mt-4'>
+                            <label>Order Quantity</label>
+                            <input
+                                type="text"
+                                placeholder="order quantity"
+                                value={orderQty}
+                                onChange={(e) => setOrderQty(e.target.value)}
+                                className="mb-4 p-2 w-full text-black rounded"
+                            />
+                        </div>
 
                         <button
                             onClick={createBot}

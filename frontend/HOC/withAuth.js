@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../Context/AuthContext';
+import  Loader from '../components/User_Components/Loader';
 
 const withAuth = (WrappedComponent) => {
     return (props) => {
@@ -14,7 +15,7 @@ const withAuth = (WrappedComponent) => {
         }, [loading, isAuthenticated, router]);
 
         if (loading) {
-            return <div>Loading...</div>;
+            return <Loader />;
         }
 
         if (!isAuthenticated()) {
