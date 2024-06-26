@@ -1,17 +1,17 @@
 const axios = require('axios');
 const crypto = require('crypto');
 
-const apiBaseUrl = 'https://api-testnet.bybit.com';
 
 const testBybitApiConnection = async (apiKey, apiSecret) => {
     try {
+        console.log(process.env.BYBIT_API_BASE_URL)
         const timestamp = Date.now().toString();
         const recvWindow = '20000';
         const signature = generateSignature(apiKey, apiSecret, timestamp, recvWindow);
 
         const config = {
             method: 'get',
-            url: `${apiBaseUrl}/v5/user/query-api`,
+            url: `${process.env.BYBIT_API_BASE_URL}/v5/user/query-api`,
             headers: {
                 'X-BAPI-API-KEY': apiKey,
                 'X-BAPI-TIMESTAMP': timestamp,
@@ -49,10 +49,6 @@ function generateSignature(apiKey, apiSecret, timestamp, recvWindow) {
     return signature;
 }
 
-
 module.exports = {
     testBybitApiConnection
 };
-
-
-

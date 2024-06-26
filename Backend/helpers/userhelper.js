@@ -2,7 +2,6 @@ const User = require('../model/userModel')
 const ApiError = require('../utils/ApiError');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
-const jwt = require('jsonwebtoken');
 
 
 
@@ -98,26 +97,7 @@ const   sendVerificationEmail = async (email, verificationToken) => {
 
 // ------ verify token ---------------
 
-const verifyToken = (req, res, next) => {
-    const token = req.headers.authorization?.split(' ')[1]; 
-    
-   
-    if (!token) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        
-        if (err) {
-            console.error('JWT Verification Error:', err);
-            return res.status(403).json({ message: 'Invalid token' });
-        }
-        
-        req.user = decoded;
-          next();
-            
-    });
-};
 
 
 
@@ -130,6 +110,6 @@ module.exports = {
     getCreatedUser,
     generateVerificationToken,
     sendVerificationEmail,
-    verifyToken
+    
 
 }

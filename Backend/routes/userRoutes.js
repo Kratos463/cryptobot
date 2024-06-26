@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { verifyToken } = require('../helpers/userhelper')
+const {verifyToken}=require('../Middleware/authMiddleware')
 const { registerUser,
        verifyEmail,
        Emailverification,
@@ -8,14 +8,6 @@ const { registerUser,
        userData,
        logout,
        updateUserProfile} = require('../controllers/userController')
-const {getAccountBalance} = require('../controllers/accountController')
-const { Apikeysave,
-       getApiconfig} = require('../controllers/exchangeconfigController')
-const { saveCryptoPair } = require('../controllers/cryptoPairController')
-
-const {CreateBot,
-       getBots,} = require('../controllers/botController')
-
 
 const router = Router();
 
@@ -27,15 +19,6 @@ router.post('/login', loginUser)
 router.get('/userData', verifyToken, userData)
 router.post('/logout', logout)
 router.put('/update_user/:id', updateUserProfile);
-
-router.post('/exchangeconfiguration', verifyToken, Apikeysave)
-router.post('/savecryptopair', verifyToken, saveCryptoPair)
-router.post('/walletbalance',verifyToken,getAccountBalance)
-router.post('/createbot',verifyToken,CreateBot)
-router.get('/bots',verifyToken,getBots)
-
-
-
 
 
 

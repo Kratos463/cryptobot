@@ -10,7 +10,7 @@ const { findExchangeConfig } = require('../helpers/exchangeConfigHelper');
 const getAccountBalance = asyncHandler(async (req, res) => {
     console.log("Handler reached...");
 
-    const apiBaseUrl = 'https://api-testnet.bybit.com';
+   
     const { exchangeName, strategyType, accountType, coin } = req.body;
 
     const userId = req.user.userId;
@@ -23,7 +23,7 @@ const getAccountBalance = asyncHandler(async (req, res) => {
 
         const config = {
             method: 'get',
-            url: `${apiBaseUrl}/v5/account/wallet-balance`,
+            url: `${process.env.BYBIT_API_BASE_URL}/v5/account/wallet-balance`,
             headers: {
                 'X-BAPI-API-KEY': apiKey,
                 'X-BAPI-TIMESTAMP': timestamp,

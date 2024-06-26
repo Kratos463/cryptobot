@@ -1,4 +1,7 @@
 const ExchangeConfig = require('../model/exchangeConfigModel');
+const axios = require('axios');
+const crypto = require('crypto');
+
 
 // ---------Fetching api key and secret from exchange config with user and exchage----------
 
@@ -20,5 +23,5 @@ const findExchangeConfig = async (userId, exchangeName) => {
 };
 
 module.exports = {
-    findExchangeConfig
+    findExchangeConfig,
 };

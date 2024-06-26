@@ -1,21 +1,27 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const bodyParser = require('body-parser');
-
 
 const app = express();
 
 // Middleware
-app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
 
 // Import routes
 const userRoutes = require('./routes/userRoutes');
+const accountRoutes = require('./routes/accountRoutes');
+const exchangeRoutes = require('./routes/exchangeRoutes')
+const cryptopairRoutes = require('./routes/cryptopairRoutes')
+const botRoutes = require('./routes/botRoutes')
 
 // Use routes
 app.use('/', userRoutes);
+app.use('/account', accountRoutes);
+app.use('/exchange',exchangeRoutes);
+app.use('/cryptopair',cryptopairRoutes);
+app.use('/bot',botRoutes);
+
 
 module.exports = { app };

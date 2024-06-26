@@ -1,7 +1,10 @@
 const asyncHandler = require('express-async-handler');
 const ExchangeConfig = require('../model/exchangeConfigModel');
-const { testBybitApiConnection } = require('../utils/apiUtils');
+const { testBybitApiConnection } = require('../Services/bybitExchange');
 const {getAccountInformation} = require('../utils/GetAccountinfo')
+
+
+// -------------Saving the apikey and secret before checking it with bybit-------------
 
 const Apikeysave = asyncHandler(async (req, res) => {
     const { exchangeName, apiKey, apiSecret } = req.body;
@@ -38,7 +41,7 @@ const Apikeysave = asyncHandler(async (req, res) => {
 });
 
 
-
+// --------Get the exchange configuration with the user id an exchange name----------------
 
 const getApiconfig =asyncHandler(async(req,res)=>{
     const { userId, exchangeName } = req.body;
