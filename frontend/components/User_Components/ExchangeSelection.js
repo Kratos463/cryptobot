@@ -37,40 +37,38 @@ function ExchangeSelection() {
     };
 
     return (
-        <div className="fixed w-full h-full flex items-center justify-center" style={{ backgroundColor: '#040408', backgroundImage: 'url("/Assets/loginimage.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+        <div className="fixed w-full h-full flex items-center justify-center" >
             <div className="flex flex-col items-center justify-center">
-                <div className="shadow rounded-lg w-full max-w-[1200px] p-10 mt-4 mb-12 ">
-                    <p tabIndex={0} role="heading" aria-label="Select Exchange" className="text-2xl font-bold leading-6 text-white text-center mb-8">Select Exchange</p>
+                <div className="shadow rounded-lg w-full max-w-[1200px] p-10 mt-4 mb-12">
+                    <p tabIndex={0} role="heading" aria-label="Select Exchange" className="text-2xl font-bold leading-6 text-white text-center mb-8 mt-12">Select Exchange</p>
 
                     <div className="mt-6 flex flex-wrap justify-center gap-8">
                         {exchanges.map(exchange => (
                             <div
                                 key={exchange.value}
                                 onClick={() => handleExchangeSelect(exchange.value)}
-                                className={`relative flex flex-col items-center justify-center cursor-pointer p-6 rounded-lg ${selectedExchange === exchange.value ? 'bg-blue-700' : 'bg-black'} transition-all duration-300 transform ${exchange.active ? 'hover:bg-blue-500 hover:scale-105' : ''}`}
+                                className={`relative flex flex-col items-center justify-center cursor-pointer p-6 rounded-lg ${selectedExchange === exchange.value ? 'bg-blue-600' : 'bg-black'} transition-all duration-300 transform ${exchange.active ? 'hover:bg-blue-500 hover:scale-105' : ''}`}
                                 style={{ border: selectedExchange === exchange.value ? '3px solid #043bbc' : '1px solid #043bbc', width: '240px', height: '240px' }}
                             >
                                 <img src={exchange.logo} alt={`${exchange.name} Logo`} className="w-24 h-24 mb-4 rounded-full" />
                                 <span className="text-white font-semibold text-lg">{exchange.name}</span>
                                 <p className="text-white text-center mt-2">{exchange.description}</p>
                                 {!exchange.active && (
-                                    <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2 h-4 flex items-center justify-center bg-white bg-opacity-100">
-                                        <span className="text-black font-semibold">Inactive</span>
+                                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80 rounded-lg">
+                                        <div class="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">loading...</div>
                                     </div>
                                 )}
                             </div>
                         ))}
                     </div>
 
-
-
-                    <div className="mt-8 pl-56" >
+                    <div className="mt-12 pl-64">
                         <button
                             onClick={handleSave}
                             role="button"
                             aria-label="Save Exchange"
                             className="focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 text-lg font-semibold leading-none text-white focus:outline-none bg-blue-700 rounded hover:bg-indigo-600 py-4 w-[65%]"
-                            style={{ backgroundColor: '#0086c9', border: '1px solid #043bbc' }}
+                            style={{ backgroundColor: '#043bbc', border: '1px solid #043bbc' }}
                         >
                             Save
                         </button>

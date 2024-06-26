@@ -66,13 +66,13 @@ function Header() {
                         <img src='/Assets/cryptobotLogo.png' alt='Cryptobot Logo' width={110} height={95} />
                     </div>
                     <ul className="hidden md:flex flex-auto space-x-2 pl-48 pt-2">
-                        <li onClick={() => selectMenuItem(0)} className={`${style[0] ? 'text-white' : 'text-gray-600'} cursor-pointer text-sm leading-5 pl-8`}>Home</li>
-                        <li onClick={() => selectMenuItem(1)} className={`${style[1] ? 'text-white' : 'text-gray-600'} cursor-pointer text-sm leading-5 pl-4`}>Pricing</li>
-                        <li onClick={() => selectMenuItem(2)} className={`${style[2] ? 'text-white' : 'text-gray-600'} cursor-pointer text-sm leading-5 pl-4`}>Learn</li>
-                        <li onClick={() => selectMenuItem(3)} className={`${style[3] ? 'text-white' : 'text-gray-600'} cursor-pointer text-sm leading-5 pl-4`}>Company</li>
+                        <li onClick={() => selectMenuItem(0)} className={`${style[0] ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-8`}>Home</li>
+                        <li onClick={() => selectMenuItem(1)} className={`${style[1] ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-4`}>Pricing</li>
+                        <li onClick={() => selectMenuItem(2)} className={`${style[2] ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-4`}>Learn</li>
+                        <li onClick={() => selectMenuItem(3)} className={`${style[3] ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-4`}>Company</li>
                         <li
                             onClick={() => handleItemClick(4)}
-                            className={`${selected === 4 ? 'text-white' : 'text-gray-600'} cursor-pointer text-sm leading-5 pl-4 relative`}
+                            className={`${selected === 4 ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-4 relative`}
                         >
                             Settings
                             {isDropdownOpen && (
