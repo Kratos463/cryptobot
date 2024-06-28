@@ -100,11 +100,11 @@ const CreateBot = () => {
 
 
     return (
-        <div className="fixed w-full h-full items-center" style={{ backgroundColor: '#040408', backgroundImage: 'url("/Assets/loginimage.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+        <div className="fixed w-full h-full items-center" >
             <div className="flex flex-col items-center justify-center">
                 <div className="shadow rounded lg:w-[55%] md:w-[40%] w-full p-10 mt-4 mb-12 text-white">
                     <div>
-                        <p className="text-xl font-bold leading-6 text-white text-center mt-4 mb-8">Create Trading Bot</p>
+                        <p className="text-xl font-bold leading-6 text-white text-center mt-12 mb-8">Create Trading Bot</p>
                         <div>
                             <label>Bot Name</label>
                             <input
@@ -112,7 +112,8 @@ const CreateBot = () => {
                                 placeholder="Bot Name"
                                 value={botName}
                                 onChange={(e) => setBotName(e.target.value)}
-                                className="mb-4 p-2 w-full text-black rounded"
+                                style={{ backgroundColor: '#040414', border: '1px solid #043bbc' }} 
+                                className="bg-gray-800  rounded focus:outline-none text-xs font-medium leading-none text-white py-3 w-full pl-3 "
                             />
                         </div>
                         <div className="mt-4">
@@ -120,17 +121,19 @@ const CreateBot = () => {
                             <select
                                 value={selectedPair}
                                 onChange={(e) => setSelectedPair(e.target.value)}
-                                className="mb-4 p-2 w-full text-black rounded"
+                                style={{ backgroundColor: '#040414', border: '1px solid #043bbc' }}
+                                className="bg-gray-800  rounded focus:outline-none text-xs font-medium leading-none text-white py-3 w-full pl-3 "
+ 
                             >
                                 {cryptoPairs.map(pair => (
-                                    <option key={pair.name} value={pair.name} className='text-black'>
+                                    <option key={pair.name} value={pair.name} className='text-white'>
                                         {`${pair.base_currency}, ${pair.quote_currency}`}
                                     </option>
                                 ))}
                             </select>
                         </div>
                         <div>
-                            <label className="block mb-2">Trade In</label>
+                            <label className="block mb-2 pt-2">Trade In</label>
                             <div className="space-y-2">
                                 <label className=" items-center">
                                     <input
@@ -178,14 +181,16 @@ const CreateBot = () => {
                                 placeholder="order quantity"
                                 value={orderQty}
                                 onChange={(e) => setOrderQty(e.target.value)}
-                                className="mb-4 p-2 w-full text-black rounded"
+                                style={{ backgroundColor: '#040414', border: '1px solid #043bbc' }}
+                                className="bg-gray-800  rounded focus:outline-none text-xs font-medium leading-none text-white py-3 w-full pl-3 "
+
                             />
                         </div>
 
                         <button
                             onClick={createBot}
-                            className="p-2 bg-blue-500 text-white rounded mt-4"
-                        >
+                            className="focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 text-sm font-semibold leading-none text-white focus:outline-none bg-blue-700  rounded hover:bg-indigo-600 py-4 mt-8 w-full" style={{ backgroundColor: '#0086c9', border: '1px solid #043bbc' }}>
+                        
                             Create Bot
                         </button>
                     </div>

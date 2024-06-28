@@ -44,7 +44,7 @@ function Header() {
         router.push('/Profile/ProfileDashboard');
     };
     const handleBot = () => {
-        router.push('/page/BotList');
+        router.push('/page/Mybots');
     };
 
     const selectMenuItem = (index) => {
@@ -77,17 +77,17 @@ function Header() {
                             Settings
                             {isDropdownOpen && (
                                 <ul className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
-                                    <Link href='/page/ExchangeSelection'>
+                                    <Link href='/page/ExchangeSelect'>
                                         <li className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
                                             Exchange
                                         </li>
                                     </Link>
-                                    <Link href='/page/apiconfig'>
+                                    <Link href='/page/ApiConfiguration'>
                                         <li className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
                                             API Configuration
                                         </li>
                                     </Link>
-                                    <Link href='/page/CreateBot'>
+                                    <Link href='/page/BotCreation'>
                                         <li className="cursor-pointer text-sm leading-5 text-gray-600 hover:bg-gray-100 pl-4 py-2">
                                             Create Bot
                                         </li>
