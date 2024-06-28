@@ -26,7 +26,7 @@ const BotSchema = new Schema({
     orderType: {
         type: String
     },
-    cryptoPair: {
+    Symbol: {
         type: String,
         required: true
     },

@@ -9,8 +9,10 @@ const ExchangeConfig = require('../model/exchangeConfigModel')
 const CreateBot = asyncHandler(async (req, res) => {
     const userId = req.user.userId;
     try {
-        const orderType = Market;
+        const orderType = "Market";
         const { botName, cryptoPair, strategy, exchangeName,orderQuantity } = req.body;
+       
+
         const {exchangeConfig } = await findExchangeConfig(userId, exchangeName);
 
         // Check if a bot with the same name already exists for this user

@@ -14,7 +14,7 @@ const findExchangeConfig = async (userId, exchangeName) => {
         return {
             apiKey: config.apiKey,
             apiSecret: config.apiSecret,
-            exchangeConfig:config._id.toString()
+            exchangeConfig: config._id.toString()
         };
     } catch (err) {
         console.error('Error fetching exchange configuration:', err);
@@ -22,6 +22,28 @@ const findExchangeConfig = async (userId, exchangeName) => {
     }
 };
 
+
+
+// ---------finding Exchange configuration by exchange id ----------------
+
+
+const findExchangeConfigbyId = async (exchangeConfig) => {
+    try {
+        const config = await ExchangeConfig.findById({ _id: exchangeConfig });
+        if (!config) {
+            throw new Error('exchange configuration not found');
+        }
+        return {
+            apiKey: config.apiKey,
+            apiSecret: config.apiSecret,
+        }
+    } catch (error) {
+        console.error("Error in fetching exchange configuration :", error);
+        throw new Error("Internal server error")
+    }
+};
+
 module.exports = {
     findExchangeConfig,
+    findExchangeConfigbyId
 };

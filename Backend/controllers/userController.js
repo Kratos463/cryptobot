@@ -39,7 +39,6 @@ const registerUser = asyncHandler(async (req, res) => {
 
         return res.status(400).json({ message: "User with email or username already exists" });
     }
-    
     let createdUser;
     try {
         createdUser = await User.create({ fullname, email, password });
@@ -52,12 +51,12 @@ const registerUser = asyncHandler(async (req, res) => {
     //         temporaryUserStore.delete(token);
     //     }
     // }
-   
+
 
     res.status(201).json({
         message: 'User registered successfully.',
         user: createdUser,
-       
+
     });
 });
 
@@ -124,7 +123,7 @@ const checkEmail = asyncHandler(async (req, res) => {
 
 // -------------------Login user--------------------
 
-const loginUser = asyncHandler(async(req,res)=>{
+const loginUser = asyncHandler(async (req, res) => {
 
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -153,27 +152,27 @@ const loginUser = asyncHandler(async(req,res)=>{
 
 
 const userData = (req, res) => {
-   
-    const userId = req.user.userId; 
 
-        User.findById(userId)
+    const userId = req.user.userId;
+
+    User.findById(userId)
         .then(user => {
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
-            res.json(user); 
+            res.json(user);
         })
         .catch(err => {
             console.error('Error fetching user data:', err);
             res.status(500).json({ message: 'Internal server error' });
         });
-    }
+}
 
 
 
 // ------------Logout----------------
 
-const logout = asyncHandler(async(req,res)=>{
+const logout = asyncHandler(async (req, res) => {
     res.status(200).json({ message: 'Logged out successfully' });
 
 })

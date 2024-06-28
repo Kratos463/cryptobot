@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const Bot = require('../model/botModel');
 const axios = require('axios');
 const crypto = require('crypto');
+const { findExchangeConfigbyId } = require('../helpers/exchangeConfigHelper')
 
 const handleWebhook = asyncHandler(async (req, res) => {
     const { userId, botId } = req.params;
@@ -11,41 +12,32 @@ const handleWebhook = asyncHandler(async (req, res) => {
     try {
         // Fetch the bot details
         const bot = await Bot.findOne({ _id: botId });
-
         if (!bot) {
-            console.log("No bot found..");
+            console.log("Bot not found..");
             return res.status(404).send('Bot not found');
         }
-
         console.log("Found bot:", bot);
 
-
-        const { cryptoPair, strategy, leverage } = bot;
-
+        const { cryptoPair, strategy, orderType, orderQuantity, exchangeConfig, leverage } = bot;
+        const { apiKey, apiSecret } = await findExchangeConfigbyId(exchangeConfig);
         const side = action.toLowerCase() === 'buy' ? 'Buy' : 'Sell';
 
-        const orderType = 'Market';
-        const qty = '1';
 
-        // Generate API signature
-        const apiKey = process.env.BYBIT_API_KEY;
-        const apiSecret = process.env.BYBIT_API_SECRET;
         const timestamp = Date.now().toString();
         const recvWindow = '20000';
-        const signature = generateSignature(apiKey, apiSecret, timestamp, recvWindow, side, cryptoPair, orderType, qty);
+        const signature = generateSignature(apiKey, apiSecret, timestamp, recvWindow, side, cryptoPair, orderType, orderQuantity);
 
-        // Prepare order payload
+
         const orderPayload = {
-            category: strategy.toLowerCase(), // e.g., 'linear' for futures
+            category: strategy.toLowerCase(), //  'linear' for futures
             symbol: cryptoPair,
             side,
             orderType,
-            qty,
+            qty: orderQuantity,
             timeInForce: 'GTC',
             positionIdx: 0,
         };
 
-        // Configure Axios request
         const config = {
             method: 'post',
             url: `${process.env.BYBIT_API_BASE_URL}/v5/order/create`,
@@ -63,7 +55,7 @@ const handleWebhook = asyncHandler(async (req, res) => {
 
         if (response.data.retCode !== 0) {
             console.error('Bybit API Error:', response.data.retMsg);
-            return res.status(400).send('Failed to place order on Bybit');
+            return res.status(400).send('Failed to place order on Bybit',);
         }
 
         console.log('Order placed successfully:', response.data);
@@ -74,8 +66,8 @@ const handleWebhook = asyncHandler(async (req, res) => {
     }
 });
 
-function generateSignature(apiKey, apiSecret, timestamp, recvWindow, side, symbol, orderType, qty) {
-    const paramStr = `${timestamp}${apiKey}${recvWindow}side=${side}&symbol=${symbol}&orderType=${orderType}&qty=${qty}`;
+function generateSignature(apiKey, apiSecret, timestamp, recvWindow, side, symbol, orderType, orderQuantity) {
+    const paramStr = `${timestamp}${apiKey}${recvWindow}side=${side}&symbol=${symbol}&orderType=${orderType}&qty=${orderQuantity}`;
     const signature = crypto.createHmac('sha256', apiSecret).update(paramStr).digest('hex');
     return signature;
 }
