@@ -61,10 +61,13 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    twofaSecret: {
+        type: String,
+    },
     createdAt: {
         type: Date,
         default: Date.now,
-        
+
     },
     bots: [{
         type: mongoose.Schema.Types.ObjectId,
