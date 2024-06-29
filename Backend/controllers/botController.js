@@ -2,6 +2,9 @@ const asyncHandler = require('express-async-handler');
 const Bot = require('../model/botModel');
 const { findExchangeConfig } = require('../helpers/exchangeConfigHelper');
 const ExchangeConfig = require('../model/exchangeConfigModel')
+const shortid = require('shortid');
+const ShortIdMapping = require('../model/shortIdMapping')
+
 
 
 // ---------------Creating Bot---------------
@@ -9,8 +12,7 @@ const ExchangeConfig = require('../model/exchangeConfigModel')
 const CreateBot = asyncHandler(async (req, res) => {
     const userId = req.user.userId;
     try {
-
-        const { botName, exchangeName } = req.body;
+        const { botName, exchangeName,category,isLeverage } = req.body;
         const { exchangeConfig } = await findExchangeConfig(userId, exchangeName);
 
         const existingBotByName = await Bot.findOne({ botName, user: userId });
@@ -20,13 +22,26 @@ const CreateBot = asyncHandler(async (req, res) => {
 
         const newBot = new Bot({
             botName,
+            category,
             exchangeConfig,
+            isLeverage,
             user: userId,
         });
 
         const savedBot = await newBot.save();
 
-        res.status(201).json(savedBot);
+        const shortId = shortid.generate();
+        const botId = savedBot._id;
+
+        const shortIdMapping = new ShortIdMapping({
+            shortId,
+            userId,
+            botId,
+        });
+
+        await shortIdMapping.save();
+
+        res.status(201).json({ shortId });
     } catch (error) {
         console.error('Error creating bot:', error);
         res.status(500).json({ error: 'Failed to create bot' });

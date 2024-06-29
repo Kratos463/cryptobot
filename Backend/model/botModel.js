@@ -16,25 +16,12 @@ const BotSchema = new Schema({
         type: String,
         required: true
     },
-    webhookUrl: {
-        type: String,
 
-    },
-    orderQuantity: {
-        type: String,
-    },
-    orderType: {
-        type: String
-    },
-    Symbol: {
-        type: String,
-       
-    },
-    strategy: {
+    category: {
         type: String
     },
 
-    Leverage: {
+    isLeverage: {
         type: String,
     }
 });
