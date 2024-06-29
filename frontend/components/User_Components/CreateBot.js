@@ -34,7 +34,7 @@ const CreateBot = () => {
             toast.success('Bot created successfully');
             console.log(response.data);
             const shortId = response.data.shortId;
-            router.push(`/page/GetWebhookurl?shortId=${shortId}`);
+            router.push(`/page/Webhook?shortId=${shortId}`);
         } catch (error) {
             toast.error('Error creating Bot');
             console.error('Error creating bot:', error);
