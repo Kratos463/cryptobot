@@ -28,7 +28,7 @@ const BotSchema = new Schema({
     },
     Symbol: {
         type: String,
-        required: true
+       
     },
     strategy: {
         type: String

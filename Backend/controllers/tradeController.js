@@ -6,11 +6,10 @@ const { findExchangeConfigbyId } = require('../helpers/exchangeConfigHelper')
 
 const handleWebhook = asyncHandler(async (req, res) => {
     const { userId, botId } = req.params;
-    const { action } = req.body; // Assuming the webhook sends a JSON body with the 'action' field ('buy' or 'sell')
+    const { symbol, side, qty, price, orderType, Category } = req.body;
     console.log(userId, botId);
 
     try {
-        // Fetch the bot details
         const bot = await Bot.findOne({ _id: botId });
         if (!bot) {
             console.log("Bot not found..");
@@ -18,22 +17,20 @@ const handleWebhook = asyncHandler(async (req, res) => {
         }
         console.log("Found bot:", bot);
 
-        const { cryptoPair, strategy, orderType, orderQuantity, exchangeConfig, leverage } = bot;
+        const { exchangeConfig } = bot;
         const { apiKey, apiSecret } = await findExchangeConfigbyId(exchangeConfig);
-        const side = action.toLowerCase() === 'buy' ? 'Buy' : 'Sell';
-
 
         const timestamp = Date.now().toString();
         const recvWindow = '20000';
-        const signature = generateSignature(apiKey, apiSecret, timestamp, recvWindow, side, cryptoPair, orderType, orderQuantity);
+        const signature = generateSignature(apiKey, apiSecret, timestamp, recvWindow, side, symbol, orderType, qty);
 
 
         const orderPayload = {
-            category: strategy.toLowerCase(), //  'linear' for futures
-            symbol: cryptoPair,
+            Category,
+            symbol,
             side,
             orderType,
-            qty: orderQuantity,
+            qty,
             timeInForce: 'GTC',
             positionIdx: 0,
         };
@@ -66,8 +63,8 @@ const handleWebhook = asyncHandler(async (req, res) => {
     }
 });
 
-function generateSignature(apiKey, apiSecret, timestamp, recvWindow, side, symbol, orderType, orderQuantity) {
-    const paramStr = `${timestamp}${apiKey}${recvWindow}side=${side}&symbol=${symbol}&orderType=${orderType}&qty=${orderQuantity}`;
+function generateSignature(apiKey, apiSecret, timestamp, recvWindow, side, symbol, orderType, qty) {
+    const paramStr = `${timestamp}${apiKey}${recvWindow}side=${side}&symbol=${symbol}&orderType=${orderType}&qty=${qty}`;
     const signature = crypto.createHmac('sha256', apiSecret).update(paramStr).digest('hex');
     return signature;
 }
