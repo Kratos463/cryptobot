@@ -30,7 +30,7 @@ function ExchangeSelection() {
         if (selectedExchange) {
             storeSelectedExchange(selectedExchange);
             toast.success('Exchange selected successfully');
-            router.push('/page/apiconfig');
+            router.push('/page/ApiConfiguration');
         } else {
             toast.error('Please select an exchange');
         }
