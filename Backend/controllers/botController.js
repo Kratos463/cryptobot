@@ -14,7 +14,6 @@ const CreateBot = asyncHandler(async (req, res) => {
     try {
         const { botName, exchangeName,category,isLeverage } = req.body;
         const { exchangeConfig } = await findExchangeConfig(userId, exchangeName);
-
         const existingBotByName = await Bot.findOne({ botName, user: userId });
         if (existingBotByName) {
             return res.status(400).json({ error: 'Bot name already exists for this user' });
@@ -29,7 +28,6 @@ const CreateBot = asyncHandler(async (req, res) => {
         });
 
         const savedBot = await newBot.save();
-
         const shortId = shortid.generate();
         const botId = savedBot._id;
 

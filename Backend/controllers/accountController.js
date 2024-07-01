@@ -8,11 +8,8 @@ const { findExchangeConfig } = require('../helpers/exchangeConfigHelper');
 // -------Fetching the wallet Balance----------
 
 const getAccountBalance = asyncHandler(async (req, res) => {
-    console.log("Handler reached...");
-
    
     const { exchangeName, strategyType, accountType, coin } = req.body;
-
     const userId = req.user.userId;
 
     try {

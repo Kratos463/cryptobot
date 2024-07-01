@@ -56,8 +56,6 @@ const generateSecret = asyncHandler(async (req, res) => {
     }
 });
 
-
-
 // --------verify the otp by authenticator-------------
 
 const verify_otp = asyncHandler(async (req, res) => {
