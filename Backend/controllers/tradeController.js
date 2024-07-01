@@ -7,8 +7,8 @@ const ShortIdMapping = require('../model/shortIdMapping')
 
 
 const handleWebhook = asyncHandler(async (req, res) => {
-    const { shortId } = req.params;
 
+    const { shortId } = req.params;
     try {
         const mapping = await ShortIdMapping.findOne({ shortId });
         if (!mapping) {
@@ -17,8 +17,8 @@ const handleWebhook = asyncHandler(async (req, res) => {
 
         const { userId, botId } = mapping;
         const { symbol, side, qty, price, orderType, stopLoss, takeProfit } = req.body;
-
         const bot = await Bot.findOne({ _id: botId });
+        
         if (!bot) {
             console.log("Bot not found..");
             return res.status(404).send('Bot not found');

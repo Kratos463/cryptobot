@@ -1,7 +1,8 @@
 const asyncHandler = require('express-async-handler');
 const ExchangeConfig = require('../model/exchangeConfigModel');
 const { testBybitApiConnection } = require('../Services/bybitExchange');
-const {getAccountInformation} = require('../utils/GetAccountinfo')
+const {testCoinDCXApiConnection} = require('../Services/coindcxExchange');
+// const {getAccountInformation} = require('../utils/GetAccountinfo')
 
 
 // -------------Saving the apikey and secret before checking it with bybit-------------
@@ -9,14 +10,22 @@ const {getAccountInformation} = require('../utils/GetAccountinfo')
 const Apikeysave = asyncHandler(async (req, res) => {
     const { exchangeName, apiKey, apiSecret } = req.body;
 
-   
     if (!exchangeName || !apiKey || !apiSecret) {
         return res.status(400).json({ success: false, message: 'Exchange name, API key, and API secret are required' });
     }
 
-    const testResult = await testBybitApiConnection(apiKey, apiSecret);
+    let testResult;
+
+    if (exchangeName === 'Bybit') {
+        testResult = await testBybitApiConnection(apiKey, apiSecret);
+    } else if (exchangeName === 'CoinDCX') {
+        testResult = await testCoinDCXApiConnection(apiKey, apiSecret);
+    } else {
+        return res.status(400).json({ success: false, message: 'Unsupported exchange' });
+    }
+
     if (!testResult.success) {
-        return res.status(400).json({ success: false, message: 'Failed to test Bybit API connection', error: testResult.message });
+        return res.status(400).json({ success: false, message: 'Failed to test API connection', error: testResult.message });
     }
 
     if (testResult.message === 'Invalid API key provided') {
@@ -39,6 +48,7 @@ const Apikeysave = asyncHandler(async (req, res) => {
         return res.json({ success: true, message: 'API Key saved' });
     }
 });
+
 
 
 // --------Get the exchange configuration with the user id an exchange name----------------
