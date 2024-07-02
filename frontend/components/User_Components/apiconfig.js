@@ -105,7 +105,7 @@ const exchangeName = selectedExchange;
                     </div>
 
                     <div className="mt-6">
-                        <Link href='/page/CreateBot'>
+                        <Link href='/page/BotCreation'>
                         <button
                             onClick={handleSave}
                             role="button"

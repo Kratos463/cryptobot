@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const exchanges = [
     { name: 'Bybit', value: 'bybit', logo: '/Assets/bybit-logo.jpg', description: 'Bybit is a leading crypto derivatives exchange.', active: true },
-    { name: 'Binance', value: 'binance', logo: '/Assets/binancelogo.jpg', description: 'Binance is the world’s largest crypto exchange.', active: false },
+    { name: 'CoinDCX', value: 'CoinDCX', logo: '/Assets/coinDCX.jpg', description: 'Coindcx is the world’s largest crypto exchange.', active: true },
     { name: 'Coinbase', value: 'coinbase', logo: '/Assets/coinbase.jpg', description: 'Coinbase is a secure online platform for buying, selling.', active: false },
     { name: 'Kraken', value: 'kraken', logo: '/Assets/kraken.jpg', description: 'Kraken is a US-based cryptocurrency exchange.', active: false }
 ];
@@ -18,14 +18,13 @@ function ExchangeSelection() {
     const [selectedExchange, setSelectedExchange] = useState(exchanges.find(ex => ex.active)?.value || '');
     const { storeSelectedExchange } = useExchangeContext();
 
-
-
     const handleExchangeSelect = (value) => {
         if (exchanges.find(ex => ex.value === value).active) {
             setSelectedExchange(value);
         }
     }
 
+    console.log("selected exchange",selectedExchange)
     const handleSave = () => {
         if (selectedExchange) {
             storeSelectedExchange(selectedExchange);
@@ -47,7 +46,7 @@ function ExchangeSelection() {
                             <div
                                 key={exchange.value}
                                 onClick={() => handleExchangeSelect(exchange.value)}
-                                className={`relative flex flex-col items-center justify-center cursor-pointer p-6 rounded-lg ${selectedExchange === exchange.value ? 'bg-blue-600' : 'bg-black'} transition-all duration-300 transform ${exchange.active ? 'hover:bg-blue-500 hover:scale-105' : ''}`}
+                                className={`relative flex flex-col items-center justify-center cursor-pointer p-6 rounded-lg ${selectedExchange === exchange.value ? 'bg-black' : 'bg-black'} transition-all duration-300 transform ${exchange.active ? 'hover:bg-blue-500 hover:scale-105' : ''}`}
                                 style={{ border: selectedExchange === exchange.value ? '3px solid #043bbc' : '1px solid #043bbc', width: '240px', height: '240px' }}
                             >
                                 <img src={exchange.logo} alt={`${exchange.name} Logo`} className="w-24 h-24 mb-4 rounded-full" />
