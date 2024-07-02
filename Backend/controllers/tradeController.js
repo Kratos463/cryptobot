@@ -2,7 +2,9 @@ const asyncHandler = require('express-async-handler');
 const Bot = require('../model/botModel');
 const { findExchangeConfigbyId } = require('../helpers/exchangeConfigHelper');
 const ShortIdMapping = require('../model/shortIdMapping');
-const { placeBybitOrder, placeCoinDCXOrder } = require('../helpers/orderHelper');
+const { placeBybitOrder,
+    placeCoinDCXOrder,
+    placeBingXOrder } = require('../helpers/orderHelper');
 
 const handleWebhook = asyncHandler(async (req, res) => {
     const { shortId } = req.params;
@@ -15,23 +17,29 @@ const handleWebhook = asyncHandler(async (req, res) => {
         }
 
         const { userId, botId } = mapping;
-        console.log("userid and botid",userId, botId)
 
         // Get details from the webhook URL
-        const { symbol, side, qty, price, orderType, stopLoss, takeProfit } = req.body;
+        const { symbol,
+            side,
+            qty,
+            price,
+            orderType,
+            stopLoss,
+            takeProfit,
+            positionSide,
+            type,
+            quantity, } = req.body;
+            
         const bot = await Bot.findOne({ _id: botId });
 
         if (!bot) {
             console.log("Bot not found..");
             return res.status(404).send('Bot not found');
         }
-console.log("bot is",bot)
-        // Extract details from the bot
         const { exchangeConfig, category, isLeverage } = bot;
 
         // Get the exchange API key and secret
         const { apiKey, apiSecret, exchangeName } = await findExchangeConfigbyId(exchangeConfig);
-        console.log(exchangeName)
 
         // Order payload
         const orderPayload = {
@@ -44,6 +52,9 @@ console.log("bot is",bot)
             takeProfit,
             price,
             qty,
+            positionSide,
+            type,
+            quantity,
             timeInForce: 'GTC',
             positionIdx: 0,
         };
@@ -53,7 +64,10 @@ console.log("bot is",bot)
             response = await placeBybitOrder(apiKey, apiSecret, orderPayload);
         } else if (exchangeName === 'CoinDCX') {
             response = await placeCoinDCXOrder(apiKey, apiSecret, orderPayload);
-        } else {
+        } else if (exchangeName === 'BingX') {
+            response = await placeBingXOrder(apiKey, apiSecret, orderPayload);
+        }
+        else {
             return res.status(400).send('Unsupported exchange');
         }
 
