@@ -36,6 +36,7 @@ const findExchangeConfigbyId = async (exchangeConfig) => {
         return {
             apiKey: config.apiKey,
             apiSecret: config.apiSecret,
+            exchangeName:config.exchangeName
         }
     } catch (error) {
         console.error("Error in fetching exchange configuration :", error);

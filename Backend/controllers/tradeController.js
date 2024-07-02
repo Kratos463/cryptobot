@@ -1,36 +1,39 @@
 const asyncHandler = require('express-async-handler');
 const Bot = require('../model/botModel');
-const axios = require('axios');
-const crypto = require('crypto');
 const { findExchangeConfigbyId } = require('../helpers/exchangeConfigHelper');
-const ShortIdMapping = require('../model/shortIdMapping')
-
+const ShortIdMapping = require('../model/shortIdMapping');
+const { placeBybitOrder, placeCoinDCXOrder } = require('../helpers/orderHelper');
 
 const handleWebhook = asyncHandler(async (req, res) => {
-
     const { shortId } = req.params;
+
     try {
+        // Find the bot ID and user ID by the mapping
         const mapping = await ShortIdMapping.findOne({ shortId });
         if (!mapping) {
             return res.status(404).send('Invalid short ID');
         }
 
         const { userId, botId } = mapping;
+        console.log("userid and botid",userId, botId)
+
+        // Get details from the webhook URL
         const { symbol, side, qty, price, orderType, stopLoss, takeProfit } = req.body;
         const bot = await Bot.findOne({ _id: botId });
-        
+
         if (!bot) {
             console.log("Bot not found..");
             return res.status(404).send('Bot not found');
         }
-
+console.log("bot is",bot)
+        // Extract details from the bot
         const { exchangeConfig, category, isLeverage } = bot;
-        const { apiKey, apiSecret } = await findExchangeConfigbyId(exchangeConfig);
 
-        const timestamp = Date.now().toString();
-        const recvWindow = '20000';
-        const signature = generateSignature(apiKey, apiSecret, timestamp, recvWindow, side, symbol, orderType, qty);
+        // Get the exchange API key and secret
+        const { apiKey, apiSecret, exchangeName } = await findExchangeConfigbyId(exchangeConfig);
+        console.log(exchangeName)
 
+        // Order payload
         const orderPayload = {
             category,
             symbol,
@@ -45,39 +48,22 @@ const handleWebhook = asyncHandler(async (req, res) => {
             positionIdx: 0,
         };
 
-        const config = {
-            method: 'post',
-            url: `${process.env.BYBIT_API_BASE_URL}/v5/order/create`,
-            headers: {
-                'X-BAPI-API-KEY': apiKey,
-                'X-BAPI-TIMESTAMP': timestamp,
-                'X-BAPI-RECV-WINDOW': recvWindow,
-                'X-BAPI-SIGN': signature,
-            },
-            data: orderPayload
-        };
-
-        const response = await axios(config);
-
-        if (response.data.retCode !== 0) {
-            console.error('Bybit API Error:', response.data.retMsg);
-            return res.status(400).send('Failed to place order on Bybit');
+        let response;
+        if (exchangeName === 'Bybit') {
+            response = await placeBybitOrder(apiKey, apiSecret, orderPayload);
+        } else if (exchangeName === 'CoinDCX') {
+            response = await placeCoinDCXOrder(apiKey, apiSecret, orderPayload);
+        } else {
+            return res.status(400).send('Unsupported exchange');
         }
 
-        console.log('Order placed successfully:', response.data);
+        console.log('Order placed successfully:', response);
         return res.status(200).send('Webhook processed and order placed successfully');
     } catch (error) {
         console.error('Error handling webhook:', error);
         return res.status(500).send('Internal Server Error');
     }
 });
-
-function generateSignature(apiKey, apiSecret, timestamp, recvWindow, side, symbol, orderType, qty) {
-    const paramStr = `${timestamp}${apiKey}${recvWindow}side=${side}&symbol=${symbol}&orderType=${orderType}&qty=${qty}`;
-    const signature = crypto.createHmac('sha256', apiSecret).update(paramStr).digest('hex');
-    return signature;
-}
-
 
 module.exports = {
     handleWebhook
