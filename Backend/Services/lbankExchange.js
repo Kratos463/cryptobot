@@ -18,7 +18,6 @@ const testLBankApiConnection = async (apiKey, apiSecret) => {
         const echostr = generateEchostr();
         const signatureMethod = 'HmacSHA256';
 
-
         const params = {
             api_key: apiKey,
             timestamp: timestamp,
@@ -61,11 +60,18 @@ const testLBankApiConnection = async (apiKey, apiSecret) => {
         }
 
         console.log('LBank API Response:', response.data);
-        return { success: true, message: 'API connection to LBank successful', data: response.data };
+
+        // Return success only if the result is true
+        if (response.data.result === 'true') {
+            return { success: true, message: 'API connection to LBank successful', data: response.data };
+        } else {
+            return { success: false, message: response.data.msg || 'API connection to LBank failed', data: response.data };
+        }
     } catch (error) {
         console.error('Error testing LBank API connection:', error.message);
         return { success: false, message: 'Failed to connect to LBank API', error: error.message };
     }
+
 };
 
-module.exports = { testLBankApiConnection }
+module.exports = { testLBankApiConnection };
