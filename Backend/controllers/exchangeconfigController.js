@@ -3,7 +3,8 @@ const ExchangeConfig = require('../model/exchangeConfigModel');
 const { testBybitApiConnection } = require('../Services/bybitExchange');
 const { testCoinDCXApiConnection } = require('../Services/coindcxExchange');
 const { testBingXApiConnection } = require('../Services/bingxExchange');
-const { testBitvenusApiConnection } = require('../Services/bitvenusExchange')
+const { testBitvenusApiConnection } = require('../Services/bitvenusExchange');
+const { testLBankApiConnection } = require('../Services/lbankExchange')
 // const {getAccountInformation} = require('../utils/GetAccountinfo')
 
 
@@ -26,6 +27,8 @@ const Apikeysave = asyncHandler(async (req, res) => {
         testResult = await testBingXApiConnection(apiKey, apiSecret);
     } else if (exchangeName === 'BitVenus') {
         testResult = await testBitvenusApiConnection(apiKey, apiSecret);
+    } else if (exchangeName === 'LBank') {
+        testResult = await testLBankApiConnection(apiKey, apiSecret);
     }
     else {
         return res.status(400).json({ success: false, message: 'Unsupported exchange' });
