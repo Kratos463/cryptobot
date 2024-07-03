@@ -4,7 +4,10 @@ const { findExchangeConfigbyId } = require('../helpers/exchangeConfigHelper');
 const ShortIdMapping = require('../model/shortIdMapping');
 const { placeBybitOrder,
     placeCoinDCXOrder,
-    placeBingXOrder } = require('../helpers/orderHelper');
+    placeBingXOrder,
+     } = require('../helpers/orderHelper');
+
+    const {placeLBankOrder} = require('../helpers/lbankHelper')
 
 const handleWebhook = asyncHandler(async (req, res) => {
     const { shortId } = req.params;
@@ -66,6 +69,8 @@ const handleWebhook = asyncHandler(async (req, res) => {
             response = await placeCoinDCXOrder(apiKey, apiSecret, orderPayload);
         } else if (exchangeName === 'BingX') {
             response = await placeBingXOrder(apiKey, apiSecret, orderPayload);
+        }else if (exchangeName === 'LBank') {
+            response = await placeLBankOrder(apiKey, apiSecret, orderPayload);
         }
         else {
             return res.status(400).send('Unsupported exchange');
