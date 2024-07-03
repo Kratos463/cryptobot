@@ -5,10 +5,11 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const exchanges = [
-    { name: 'Bybit', value: 'bybit', logo: '/Assets/bybit-logo.jpg', description: 'Bybit is a leading crypto derivatives exchange.', active: true },
     { name: 'CoinDCX', value: 'CoinDCX', logo: '/Assets/coinDCX.jpg', description: 'Coindcx is the world’s largest crypto exchange.', active: true },
-    { name: 'Coinbase', value: 'coinbase', logo: '/Assets/coinbase.jpg', description: 'Coinbase is a secure online platform for buying, selling.', active: false },
-    { name: 'Kraken', value: 'kraken', logo: '/Assets/kraken.jpg', description: 'Kraken is a US-based cryptocurrency exchange.', active: false }
+    { name: 'BingX', value: 'BingX', logo: '/Assets/BingX.jpg', description: 'BingX is a secure online platform for buying, selling.', active: true },
+    { name: 'LBank', value: 'LBank', logo: '/Assets/lbank.png', description: 'LBank is a US-based cryptocurrency exchange.', active: true },
+    { name: 'Bybit', value: 'bybit', logo: '/Assets/bybit-logo.jpg', description: 'Bybit is a leading crypto derivatives exchange.', active: false },
+
 ];
 
 
