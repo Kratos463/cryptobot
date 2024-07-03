@@ -1,8 +1,9 @@
 const asyncHandler = require('express-async-handler');
 const ExchangeConfig = require('../model/exchangeConfigModel');
 const { testBybitApiConnection } = require('../Services/bybitExchange');
-const {testCoinDCXApiConnection} = require('../Services/coindcxExchange');
-const {testBingXApiConnection} = require('../Services/bingxExchange')
+const { testCoinDCXApiConnection } = require('../Services/coindcxExchange');
+const { testBingXApiConnection } = require('../Services/bingxExchange');
+const { testBitvenusApiConnection } = require('../Services/bitvenusExchange')
 // const {getAccountInformation} = require('../utils/GetAccountinfo')
 
 
@@ -23,8 +24,10 @@ const Apikeysave = asyncHandler(async (req, res) => {
         testResult = await testCoinDCXApiConnection(apiKey, apiSecret);
     } else if (exchangeName === 'BingX') {
         testResult = await testBingXApiConnection(apiKey, apiSecret);
+    } else if (exchangeName === 'BitVenus') {
+        testResult = await testBitvenusApiConnection(apiKey, apiSecret);
     }
-     else {
+    else {
         return res.status(400).json({ success: false, message: 'Unsupported exchange' });
     }
 
@@ -57,7 +60,7 @@ const Apikeysave = asyncHandler(async (req, res) => {
 
 // --------Get the exchange configuration with the user id an exchange name----------------
 
-const getApiconfig =asyncHandler(async(req,res)=>{
+const getApiconfig = asyncHandler(async (req, res) => {
     const { userId, exchangeName } = req.body;
 
     try {

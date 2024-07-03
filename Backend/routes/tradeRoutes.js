@@ -4,6 +4,6 @@ const {handleWebhook} = require('../controllers/tradeController')
 
 const router = Router();
 
-router.post('/:shortId',handleWebhook)
+router.post('/:shortId',handleWebhook);
 
 module.exports = router;

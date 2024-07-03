@@ -1,6 +1,8 @@
 const axios = require('axios');
 const crypto = require('crypto');
 const CryptoJS = require('crypto-js')
+const Base64 = require('crypto-js/enc-base64');
+const hmacSHA256 = require('crypto-js/hmac-sha256');
 
 
 // -------Order place to bybit exchange-------------
@@ -79,20 +81,29 @@ const placeCoinDCXOrder = async (apiKey, apiSecret, orderPayload) => {
     return response.data;
 };
 
+
+
 // -----------Place order for Bingx exchange ----------------------- 
 
 const placeBingXOrder = async (apiKey, apiSecret, orderPayload) => {
     try {
         console.log("Reached here...");
-        const timestamp = Date.now().toString();
-        console.log(orderPayload);
 
+        // Fetch the server time
+        const serverTimeUrl = `${process.env.BINGX_API_BASE_URL}/openApi/swap/v2/server/time`;
+        const serverTimeResponse = await axios.get(serverTimeUrl);
+        const timestamp = serverTimeResponse.data.data.serverTime.toString(); // Ensure timestamp is string
+        console.log("Server Timestamp:", timestamp);
+
+        // Construct payload
         let payload = {
             symbol: orderPayload.symbol,
             side: orderPayload.side,
             positionSide: orderPayload.positionSide,
             type: orderPayload.type,
-            quantity: orderPayload.quantity
+            quantity: orderPayload.quantity,
+            timestamp: timestamp,
+            recvWindow: '5000', // Add recvWindow to payload
         };
 
         // Add optional parameters based on order type
@@ -105,24 +116,58 @@ const placeBingXOrder = async (apiKey, apiSecret, orderPayload) => {
             payload.workingType = 'MARK_PRICE';
         }
 
-        payload.timestamp = timestamp;
-
         console.log("Payload:", payload);
 
-        const signature = generateBingXSignature(apiSecret, timestamp, payload);
-
-        const config = {
-            method: 'post',
-            url: 'https://open-api.bingx.com/openApi/swap/v2/trade/order/test',
-            headers: {
-                'X-BX-APIKEY': apiKey,
-                'X-BX-SIGNATURE': signature,
-                'Content-Type': 'application/json'
-            },
-            data: payload,
+        // Sort the parameters alphabetically for the queryString
+        const getParameters = (payload, urlEncode) => {
+            let parameters = "";
+            const keys = Object.keys(payload).sort(); // Sort the keys
+            keys.forEach(key => {
+                if (urlEncode) {
+                    parameters += key + "=" + encodeURIComponent(payload[key]) + "&";
+                } else {
+                    parameters += key + "=" + payload[key] + "&";
+                }
+            });
+            if (parameters) {
+                parameters = parameters.substring(0, parameters.length - 1);
+            }
+            return parameters;
         };
 
-        console.log("Request Config:", config);
+        const queryString = getParameters(payload, false); // Use unencoded parameters for signature generation
+        const queryStringEncoded = getParameters(payload, true); // Use encoded parameters for URL
+        console.log("Query String (Unencoded):", queryString);
+        console.log("Query String (Encoded):", queryStringEncoded);
+        const path = "/openApi/swap/v2/trade/order/test";
+
+
+        // Generate signature using Base64 and hmacSHA256
+        let originString = `POST${path}${queryString}`;
+        let signature = hmacSHA256(originString, apiSecret);
+        signature = Base64.stringify(signature);
+        signature = encodeURIComponent(signature);
+        console.log("Generated Signature:", signature);
+
+        // Construct URL with signature
+        const url = `${process.env.BINGX_API_BASE_URL}${path}?${queryStringEncoded}&signature=${signature}`;
+        console.log("Request URL:", url);
+
+        // Configure axios request
+        const config = {
+            method: 'post',
+            url: url,
+            headers: {
+                'X-BX-APIKEY': apiKey,
+            },
+            data: payload,
+            transformResponse: (resp) => {
+                console.log("Original response:", resp);
+                return resp;
+            }
+        };
+
+        // Make API request
         const response = await axios(config);
         console.log('BingX Order Response:', response.data);
 
@@ -133,13 +178,7 @@ const placeBingXOrder = async (apiKey, apiSecret, orderPayload) => {
     }
 };
 
-// Function to generate BingX signature
-function generateBingXSignature(apiSecret, timestamp, payload) {
-    const queryString = `recvWindow=0&symbol=${payload.symbol}&timestamp=${timestamp}`;
-    const hmac = crypto.createHmac('sha256', apiSecret);
-    hmac.update(queryString);
-    return hmac.digest('hex');
-}
+
 
 
 
