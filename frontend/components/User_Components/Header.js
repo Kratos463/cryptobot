@@ -47,6 +47,10 @@ function Header() {
         router.push('/page/Mybots');
     };
 
+    const handleExchanges = ()=>{
+        router.push('/page/MyExchanges')
+    }
+
     const selectMenuItem = (index) => {
         let newArr = [...initialStyle];
         newArr[index] = true;
@@ -127,6 +131,7 @@ function Header() {
                                     <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                                         <button onClick={handleProfile} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">Profile</button>
                                         <button onClick={handleBot} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">My Bots</button>
+                                        <button onClick={handleExchanges} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">My Exchanges</button>
                                         <button onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">Logout</button>
                                     </div>
                                 </div>
