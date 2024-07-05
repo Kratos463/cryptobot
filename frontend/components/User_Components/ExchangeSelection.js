@@ -13,7 +13,6 @@ const exchanges = [
 ];
 
 
-
 function ExchangeSelection() {
     const router = useRouter();
     const [selectedExchange, setSelectedExchange] = useState(exchanges.find(ex => ex.active)?.value || '');
@@ -24,8 +23,8 @@ function ExchangeSelection() {
             setSelectedExchange(value);
         }
     }
+    // console.log("selected exchange",selectedExchange)
 
-    console.log("selected exchange",selectedExchange)
     const handleSave = () => {
         if (selectedExchange) {
             storeSelectedExchange(selectedExchange);
@@ -55,7 +54,7 @@ function ExchangeSelection() {
                                 <p className="text-white text-center mt-2">{exchange.description}</p>
                                 {!exchange.active && (
                                     <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80 rounded-lg">
-                                        <div class="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">loading...</div>
+                                        <div className="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">loading...</div>
                                     </div>
                                 )}
                             </div>
