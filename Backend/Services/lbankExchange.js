@@ -39,10 +39,11 @@ const testLBankApiConnection = async (apiKey, apiSecret) => {
         params.sign = sign;
 
         const data = new URLSearchParams(params).toString();
+       
 
         const config = {
             method: 'post',
-            url: `https://api.lbkex.com/v2/supplement/api_Restrictions.do`,
+            url: `${process.env.LBANK_API_BASE_URL}/v2/supplement/api_Restrictions.do`,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },

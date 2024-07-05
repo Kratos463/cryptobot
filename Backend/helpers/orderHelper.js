@@ -185,65 +185,52 @@ const placeBingXOrder = async (apiKey, apiSecret, orderPayload) => {
 };
 // --------------Placing order for Lbank Exchange-----------------
 
-const placeLBankOrder = async (apiKey, apiSecret, orderPayload) => {
-    try {
-        const timestamp = Date.now().toString();
-        const echostr = generateEchostr(); // Ensure generateEchostr is defined correctly
+// const placeLBankOrder = async (apiKey, apiSecret, orderPayload) => {
+//     try {
+//         const timestamp = Date.now().toString();
+//         const echostr = generateEchostr(); // Ensure generateEchostr is defined correctly
 
-        // Construct the request parameters
-        const params = {
-            api_key: apiKey,
-            symbol: orderPayload.symbol,
-            type: orderPayload.type,
-            price: orderPayload.price,
-            amount: orderPayload.amount,
-            timestamp: timestamp,
-            echostr: echostr,
-            signature_method: 'HmacSHA256',
-        };
+//         // Construct the request parameters
+//         const params = {
+//             api_key: apiKey,
+//             symbol: orderPayload.symbol,
+//             type: orderPayload.type,
+//             price: orderPayload.price,
+//             amount: orderPayload.amount,
+//             timestamp: timestamp,
+//             echostr: echostr,
+//             signature_method: 'HmacSHA256',
+//         };
 
-        // Generate the signature
-        const signature = generateLBankSignature(apiSecret, params);
+//         // Generate the signature
+//         const signature = generateLBankSignature(apiSecret, params);
 
-        // Include the signature in the request parameters
-        params.sign = signature;
+//         // Include the signature in the request parameters
+//         params.sign = signature;
 
-        // Build the Axios config for the request
-        const config = {
-            method: 'post',
-            url: 'https://api.lbkex.com/v2/supplement/create_order', 
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            data: new URLSearchParams(params).toString(),
-        };
+//         // Build the Axios config for the request
+//         const config = {
+//             method: 'post',
+//             url: 'https://api.lbkex.com/v2/supplement/create_order', 
+//             headers: {
+//                 'Content-Type': 'application/x-www-form-urlencoded',
+//             },
+//             data: new URLSearchParams(params).toString(),
+//         };
 
-        // Make the API request
-        const response = await axios(config);
+//         // Make the API request
+//         const response = await axios(config);
 
-        if (response.data.result !== 'true') {
-            throw new Error(`LBank API Error: ${response.data.msg}`);
-        }
+//         if (response.data.result !== 'true') {
+//             throw new Error(`LBank API Error: ${response.data.msg}`);
+//         }
 
-        return response.data;
-    } catch (error) {
-        console.error('Error placing order with LBank API:', error.message);
-        throw error;
-    }
-};
-
-
-const generateLBankSignature = (apiSecret, params) => {
-    const orderedParams = Object.keys(params).sort().reduce((acc, key) => {
-        acc[key] = params[key];
-        return acc;
-    }, {});
-
-    const paramString = new URLSearchParams(orderedParams).toString();
-    return crypto.createHmac('sha256', apiSecret).update(paramString).digest('hex');
-};
-
-
+//         return response.data;
+//     } catch (error) {
+//         console.error('Error placing order with LBank API:', error.message);
+//         throw error;
+//     }
+// };
 
 
 function generateBybitSignature(apiKey, apiSecret, timestamp, recvWindow, orderPayload) {
@@ -255,5 +242,5 @@ module.exports = {
     placeBybitOrder,
     placeCoinDCXOrder,
     placeBingXOrder,
-    placeLBankOrder,
+    
 };

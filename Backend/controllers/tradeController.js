@@ -75,9 +75,16 @@ const handleWebhook = asyncHandler(async (req, res) => {
         else {
             return res.status(400).send('Unsupported exchange');
         }
+        console.log('LBank API response:', response.data);
 
-        console.log('Order placed successfully:', response);
-        return res.status(200).send('Webhook processed and order placed successfully');
+        if (response.data.success === true) {
+            console.log('Order placed successfully:', response.data);
+            return res.status(200).json({ success: true, message: 'Order placed successfully on LBank', data: response.data });
+        } else {
+            console.log('Failed to place order:', response.data.msg || 'Unknown error');
+            return res.status(400).json({ success: false, message: response.data.msg || 'Failed to place order on LBank', data: response.data });
+        }
+        
     } catch (error) {
         console.error('Error handling webhook:', error);
         return res.status(500).send('Internal Server Error');

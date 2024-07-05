@@ -49,7 +49,7 @@ const placeLBankOrder = async (apiKey, apiSecret, orderPayload) => {
 
         const config = {
             method: 'post',
-            url: 'https://api.lbkex.com/v2/supplement/create_order_test.do',
+            url: `${process.env.LBANK_API_BASE_URL}/v2/supplement/create_order_test.do`,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
@@ -75,3 +75,4 @@ const placeLBankOrder = async (apiKey, apiSecret, orderPayload) => {
 };
 
 module.exports = { placeLBankOrder };
+
