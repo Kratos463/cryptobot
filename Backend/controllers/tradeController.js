@@ -4,10 +4,10 @@ const { findExchangeConfigbyId } = require('../helpers/exchangeConfigHelper');
 const ShortIdMapping = require('../model/shortIdMapping');
 const { placeBybitOrder,
     placeCoinDCXOrder,
-    placeBingXOrder,
-     } = require('../helpers/orderHelper');
+    placeBingXOrder, } = require('../helpers/orderHelper');
+const { placeLBankOrder } = require('../helpers/lbankHelper')
 
-    const {placeLBankOrder} = require('../helpers/lbankHelper')
+// -------Handling the webhook url----------------
 
 const handleWebhook = asyncHandler(async (req, res) => {
     const { shortId } = req.params;
@@ -32,7 +32,7 @@ const handleWebhook = asyncHandler(async (req, res) => {
             positionSide,
             type,
             quantity, } = req.body;
-            
+
         const bot = await Bot.findOne({ _id: botId });
 
         if (!bot) {
@@ -69,7 +69,7 @@ const handleWebhook = asyncHandler(async (req, res) => {
             response = await placeCoinDCXOrder(apiKey, apiSecret, orderPayload);
         } else if (exchangeName === 'BingX') {
             response = await placeBingXOrder(apiKey, apiSecret, orderPayload);
-        }else if (exchangeName === 'LBank') {
+        } else if (exchangeName === 'LBank') {
             response = await placeLBankOrder(apiKey, apiSecret, orderPayload);
         }
         else {

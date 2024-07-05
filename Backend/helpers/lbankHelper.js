@@ -12,6 +12,8 @@ const generateEchostr = () => {
     return uuidv4().replace(/-/g, '').substring(0, 30); // Generating a 30 character string
 };
 
+// -----------Placing  order in lBank---------
+
 const placeLBankOrder = async (apiKey, apiSecret, orderPayload) => {
     try {
         const timestamp = Date.now().toString();
@@ -20,12 +22,7 @@ const placeLBankOrder = async (apiKey, apiSecret, orderPayload) => {
 
         // Extract symbol information from the symbol object
         const symbolName = orderPayload.symbol;
-        console.log(symbolName)
-        console.log(orderPayload.price)
-        console.log(orderPayload.amount)
-
-
-
+     
         const params = {
             api_key: apiKey,
             symbol: symbolName,
@@ -47,9 +44,7 @@ const placeLBankOrder = async (apiKey, apiSecret, orderPayload) => {
 
         // Generate the signature
         const sign = HmacSHA256_Sign(preparedStr, apiSecret);
-
         params.sign = sign;
-
         const data = new URLSearchParams(params).toString();
 
         const config = {
