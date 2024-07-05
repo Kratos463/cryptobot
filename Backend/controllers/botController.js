@@ -3,22 +3,27 @@ const Bot = require('../model/botModel');
 const { findExchangeConfig } = require('../helpers/exchangeConfigHelper');
 const ExchangeConfig = require('../model/exchangeConfigModel')
 const shortid = require('shortid');
-const ShortIdMapping = require('../model/shortIdMapping')
+const ShortIdMapping = require('../model/shortIdMapping');
+const User = require('../model/userModel')
 
 
 
 // ---------------Creating Bot---------------
 
+
 const CreateBot = asyncHandler(async (req, res) => {
     const userId = req.user.userId;
     try {
-        const { botName, exchangeName,category,isLeverage } = req.body;
+        const { botName, exchangeName, category, isLeverage } = req.body;
         const { exchangeConfig } = await findExchangeConfig(userId, exchangeName);
+        
+        // Check if the bot name already exists for the user
         const existingBotByName = await Bot.findOne({ botName, user: userId });
         if (existingBotByName) {
             return res.status(400).json({ error: 'Bot name already exists for this user' });
         }
 
+        // Create and save the new bot
         const newBot = new Bot({
             botName,
             category,
@@ -28,6 +33,8 @@ const CreateBot = asyncHandler(async (req, res) => {
         });
 
         const savedBot = await newBot.save();
+        
+        // Generate short ID and save the mapping
         const shortId = shortid.generate();
         const botId = savedBot._id;
 
@@ -39,12 +46,19 @@ const CreateBot = asyncHandler(async (req, res) => {
 
         await shortIdMapping.save();
 
+        // Find the user and add the bot ID to the user's model
+        await User.findByIdAndUpdate(userId, {
+            $push: { bots: botId }
+        });
+
         res.status(201).json({ shortId });
     } catch (error) {
         console.error('Error creating bot:', error);
         res.status(500).json({ error: 'Failed to create bot' });
     }
 });
+
+
 
 // -----------Get Bots list------------
 
