@@ -1,7 +1,7 @@
 import React from 'react';
-import withAuth from '../../HOC/withAuth';
-import Header from '../../components/User_Components/Header';
-import Apiconfig from '../../components/User_Components/apiconfig';
+import withAuth from '../../../HOC/withAuth';
+import Header from '../../../components/User_Components/Header';
+import Apiconfig from '../../../components/User_Components/apiconfig';
 
 function ApiConfiguration() {
   return (

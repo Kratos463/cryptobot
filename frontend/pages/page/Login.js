@@ -3,7 +3,6 @@ import { AuthContext } from '../../Context/AuthContext';
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 // import { toast, ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
-
 import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
