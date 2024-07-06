@@ -1,9 +1,73 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import axios from 'axios';
+import Swal from "sweetalert2";
 
 function Subcription() {
-    const [show, setShow] = useState(null)
-    const status = "active";
+    const [plans, setPlans] = useState([]);
+
+    // -----------Fetching data from backend to list the subcription plans---------------
+
+    useEffect(() => {
+        const fetchPlans = async () => {
+            try {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/fetch_subcriptionPlans`);
+                setPlans(response.data.plans);
+                console.log(response);
+            } catch (error) {
+                console.error('Error fetching plans:', error);
+            }
+        };
+
+        fetchPlans();
+    }, []);
+
+    // -------------Redirect to edit page to edit the subcription plan --------------
+
+    const handleEdit = (planId) => {
+        console.log(`Editing plan with ID: ${planId}`);
+    };
+
+
+    // -------------Deletion of subcription plan-----------------
+
+    const handleDelete = async (planId) => {
+
+        try {
+            const result = await Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            });
+
+            if (result.isConfirmed) {
+                const response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/delete_plan/${planId}`);
+                console.log('Plan deleted:', response.data);
+
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your plan has been deleted.",
+                    icon: "success"
+                });
+
+
+            }
+
+        } catch (error) {
+            console.error('Error deleting plan:', error);
+            Swal.fire({
+                title: "Error!",
+                text: "Failed to delete the plan. Please try again later.",
+                icon: "error"
+            });
+        }
+    };
+
+
     return (
         <>
             <div className="w-70 sm:px-6 mt-4">
@@ -23,7 +87,7 @@ function Subcription() {
                     <table className="w-full whitespace-nowrap">
                         <thead>
                             <tr className="h-16 w-full text-sm leading-none text-gray-800">
-                                <th className="font-semibold text-left pl-4">Plan Name</th>
+                                <th className="font-semibold text-left pl-2">Plan Name</th>
                                 <th className="font-semibold text-left pl-8">Price</th>
                                 <th className="font-semibold text-left pl-8">Duration</th>
                                 <th className="font-semibold text-left pl-12">Features</th>
@@ -33,69 +97,61 @@ function Subcription() {
                             </tr>
                         </thead>
                         <tbody className="w-full">
-                            <tr className="h-20 text-sm leading-none text-gray-800 border-b border-t bg-white hover:bg-gray-100 border-gray-100">
-                                <td className="pl-4 cursor-pointer">
-                                    <div className="flex items-center">
-                                        <div className="pl-2">
-                                            <p className="font-medium">Starter</p>
+                            {plans.map(plan => (
+                                <tr key={plan._id} className="h-20 text-sm leading-none text-gray-800 border-b border-t bg-white hover:bg-gray-100 border-gray-100">
+                                    <td className="pl-4 cursor-pointer">
+                                        <div className="flex items-center">
+                                            <div className="">
+                                                <p className="font-medium">{plan.planName}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td className="pl-8">
-                                    <p className="text-sm font-medium leading-none text-gray-800">$34</p>
+                                    </td>
+                                    <td className="pl-8">
+                                        <p className="text-sm font-medium leading-none text-gray-800">${plan.price}</p>
 
-                                </td>
-                                <td className="pl-8">
-                                    <p className="font-medium">
-                                        Monthly
-                                    </p>
-                                </td>
-                                <td className="pl-12">
-                                    <p className="font-medium">5 Webhook URL</p>
-                                    <p className="font-medium">Access to ltd pairs</p>
+                                    </td>
+                                    <td className="pl-8">
+                                        <p className="font-medium">
+                                            {plan.duration}
+                                        </p>
+                                    </td>
+                                    <td className="pl-12">
+                                        {plan.features.map((feature, index) => (
+                                            <p key={index} className="font-medium">{feature}</p>
+                                        ))}
+                                    </td>
+                                    <td className="pl-12">
+                                        {plan.status === "active" ? (
+                                            <div className="px-2 py-1 rounded-full bg-green-200 text-green-700">Active</div>
+                                        ) : (
+                                            <div className="px-2 py-1 rounded-full bg-red-200 text-red-700  ">Inactive</div>
+                                        )}
+                                    </td>
 
-                                </td>
-                                <td className="pl-12">
-                                    {status === "active" ? (
-                                        <div className="px-2 py-1 rounded-full bg-green-200 text-green-700">Active</div>
-                                    ) : (
-                                        <div className="px-2 py-1 rounded-full bg-red-200 text-red-700  ">Inactive</div>
-                                    )}
-                                </td>
+                                    <td className="pl-12">
+                                        <div className="flex items-center">
+                                            <p className="font-medium">{plan.description}</p>
 
-                                <td className="pl-12">
-                                    <div className="flex items-center">
-                                        <p className="font-medium">Make your first steps with trading our bots</p>
-
-                                    </div>
-                                </td>
-                                <td className="px-7 2xl:px-0">
-                                    {
-                                        show == 7 ? <button onClick={() => setShow(null)} className="focus:outline-none pl-7">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 20 20" fill="none">
-                                                <path d="M4.16667 10.8334C4.62691 10.8334 5 10.4603 5 10.0001C5 9.53984 4.62691 9.16675 4.16667 9.16675C3.70643 9.16675 3.33334 9.53984 3.33334 10.0001C3.33334 10.4603 3.70643 10.8334 4.16667 10.8334Z" stroke="#A1A1AA" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M10 10.8334C10.4602 10.8334 10.8333 10.4603 10.8333 10.0001C10.8333 9.53984 10.4602 9.16675 10 9.16675C9.53976 9.16675 9.16666 9.53984 9.16666 10.0001C9.16666 10.4603 9.53976 10.8334 10 10.8334Z" stroke="#A1A1AA" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M15.8333 10.8334C16.2936 10.8334 16.6667 10.4603 16.6667 10.0001C16.6667 9.53984 16.2936 9.16675 15.8333 9.16675C15.3731 9.16675 15 9.53984 15 10.0001C15 10.4603 15.3731 10.8334 15.8333 10.8334Z" stroke="#A1A1AA" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                        </button> : <button onClick={() => setShow(7)} className="focus:outline-none pl-7">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 20 20" fill="none">
-                                                <path d="M4.16667 10.8334C4.62691 10.8334 5 10.4603 5 10.0001C5 9.53984 4.62691 9.16675 4.16667 9.16675C3.70643 9.16675 3.33334 9.53984 3.33334 10.0001C3.33334 10.4603 3.70643 10.8334 4.16667 10.8334Z" stroke="#A1A1AA" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M10 10.8334C10.4602 10.8334 10.8333 10.4603 10.8333 10.0001C10.8333 9.53984 10.4602 9.16675 10 9.16675C9.53976 9.16675 9.16666 9.53984 9.16666 10.0001C9.16666 10.4603 9.53976 10.8334 10 10.8334Z" stroke="#A1A1AA" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M15.8333 10.8334C16.2936 10.8334 16.6667 10.4603 16.6667 10.0001C16.6667 9.53984 16.2936 9.16675 15.8333 9.16675C15.3731 9.16675 15 9.53984 15 10.0001C15 10.4603 15.3731 10.8334 15.8333 10.8334Z" stroke="#A1A1AA" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
+                                        </div>
+                                    </td>
+                                    <td className="px-7 2xl:px-0">
+                                        <button
+                                            onClick={() => handleEdit(plan._id)}
+                                            className=" p-3 bg-indigo-600  text-white rounded">
+                                            Edit
                                         </button>
-                                    }
-                                    {show == 7 && <div className="dropdown-content bg-white shadow w-24 absolute z-30 right-0 mr-6 ">
-                                        <div className="text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white"
+                                        <button
+                                            type="button"
+                                            onClick={() => handleDelete(plan._id)}
+                                            className=" p-3 bg-indigo-700 ml-2 text-white rounded"
+                                            style={{ backgroundColor: '#eb2121' }}
                                         >
-                                            <p>Edit</p>
-                                        </div>
-                                        <div className="text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
-                                            <p>Delete</p>
-                                        </div>
-                                    </div>}
-                                </td>
-                            </tr>
+                                            Delete
+                                        </button>
+
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>

@@ -5,8 +5,23 @@ function Add_Plan() {
     const [planName, setPlanName] = useState('');
     const [price, setPrice] = useState('');
     const [duration, setDuration] = useState('Monthly');
-    const [features, setFeatures] = useState('');
+    const [features, setFeatures] = useState(['']);
     const [description, setDescription] = useState('');
+
+    const handleFeatureChange = (index, value) => {
+        const newFeatures = [...features];
+        newFeatures[index] = value;
+        setFeatures(newFeatures);
+    };
+
+    const addFeature = () => {
+        setFeatures([...features, '']);
+    };
+
+    const removeFeature = (index) => {
+        const newFeatures = features.filter((_, i) => i !== index);
+        setFeatures(newFeatures);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,12 +35,10 @@ function Add_Plan() {
                 description
             };
             console.log(planData);
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/add_subcription`, planData);
-
-
-
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/add_subscription`, planData);
+            console.log(response.data);
         } catch (error) {
-            console.log('Error occured in saving plan')
+            console.log('Error occurred in saving plan', error);
         }
     };
 
@@ -160,12 +173,32 @@ function Add_Plan() {
                                         <p className="text-base font-medium leading-4 text-gray-800">
                                             Plan Features
                                         </p>
-                                        <input
-                                            type="text"
-                                            value={features}
-                                            onChange={(e) => setFeatures(e.target.value)}
-                                            className="w-full p-3 mt-2 border border-gray-300 rounded outline-none focus:bg-gray-50"
-                                        />
+                                        {features.map((feature, index) => (
+                                            <div key={index} className="flex items-center mt-2">
+                                                <input
+                                                    type="text"
+                                                    value={feature}
+                                                    onChange={(e) => handleFeatureChange(index, e.target.value)}
+                                                    className="w-full p-3 border border-gray-300 rounded outline-none focus:bg-gray-50"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeFeature(index)}
+                                                    className="mt- p-3 bg-indigo-700 ml-2 text-white rounded"
+                                            style={{ backgroundColor: '#eb2121' }}
+                                                >
+                                                    Remove
+                                                </button>
+                                            </div>
+                                        ))}
+                                        <button
+                                            type="button"
+                                            onClick={addFeature}
+                                            className="mt-2 p-3 bg-indigo-700 text-white rounded"
+                                            style={{ backgroundColor: '#0086c9' }}
+                                        >
+                                            Add Feature
+                                        </button>
                                     </div>
                                     <hr className="h-[1px] bg-gray-100 my-4" />
                                     <div className="flex flex-col flex-wrap items-center justify-center w-full px-7 lg:flex-row lg:justify-end md:justify-end gap-x-4 gap-y-4">
