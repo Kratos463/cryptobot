@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import axios from 'axios';
 import Swal from "sweetalert2";
+import {useRouter} from 'next/router'
 
 function Subcription() {
     const [plans, setPlans] = useState([]);
+    const router = useRouter();
 
     // -----------Fetching data from backend to list the subcription plans---------------
 
@@ -25,9 +27,13 @@ function Subcription() {
     // -------------Redirect to edit page to edit the subcription plan --------------
 
     const handleEdit = (planId) => {
+        
+        router.push({
+            pathname: '/Admin/SubcriptionManagement/Editplan_page',
+            query: { id: planId },
+        });
         console.log(`Editing plan with ID: ${planId}`);
     };
-
 
     // -------------Deletion of subcription plan-----------------
 
