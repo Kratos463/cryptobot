@@ -30,7 +30,7 @@ function Login() {
 
                 if (isAdmin) {
                     
-                    window.location.href = '/admin/dashboard';
+                    window.location.href = '/Admin/dashboard';
                 } else {
                  
                     window.location.href = '/user/dashboard';
