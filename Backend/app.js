@@ -32,4 +32,5 @@ app.use('/kyc',kycRoutes);
 app.use('/admin',adminRoutes)
 
 
+
 module.exports = { app };
