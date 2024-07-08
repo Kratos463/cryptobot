@@ -63,26 +63,60 @@ const DeletePlan = asyncHandler(async (req, res) => {
 // -----------Fetching subcription details by ID---------------
 
 const GetplanById = asyncHandler(async (req, res) => {
-    console.log("get plan by id ......");
+
     const { id } = req.params;
-    console.log(id)
     try {
         const planData = await Plan.findById(id);
         if (!planData) {
             return res.status(404).json({ message: "Plan not found" });
         }
-        console.log(planData);
         res.status(200).json(planData);
     } catch (error) {
         console.log("error in fetching plan data by id ..", error);
         res.status(500).json({ message: "Server error" });
     }
-});
+})
+
+// --------------Updating subcription plan ---------------
+
+const update_Plan = asyncHandler(async (req, res) => {
+
+    const { id } = req.params;
+    const { planName,
+        price,
+        duration,
+        features,
+        description } = req.body;
+
+    try {
+        const plan = await Plan.findById(id);
+
+        if (!plan) {
+            return res.status(404).json({ message: 'plan not found' })
+        }
+        plan.planName = planName;
+        plan.price = price;
+        plan.duration = duration;
+        plan.features = features;
+        plan.description = description;
+
+        const updatedPlan = await plan.save();
+        res.status(200).json({
+            message: 'Plan updated successfully.',
+            plan: updatedPlan
+        })
+
+    } catch (error) {
+        console.error('error updating plan', error);
+        res.status(500).json({ message: 'failed to update plan' })
+    }
+})
 
 
 module.exports = {
     add_Plan,
     getPlans,
     DeletePlan,
-    GetplanById
+    GetplanById,
+    update_Plan
 };
