@@ -45,7 +45,7 @@ const getPlans = asyncHandler(async (req, res) => {
 const DeletePlan = asyncHandler(async (req, res) => {
 
     const { planId } = req.params;
-  
+
     try {
         const deletedPlan = await Plan.findByIdAndDelete(planId);
         if (!deletedPlan) {
@@ -60,8 +60,29 @@ const DeletePlan = asyncHandler(async (req, res) => {
 
 })
 
+// -----------Fetching subcription details by ID---------------
+
+const GetplanById = asyncHandler(async (req, res) => {
+    console.log("get plan by id ......");
+    const { id } = req.params;
+    console.log(id)
+    try {
+        const planData = await Plan.findById(id);
+        if (!planData) {
+            return res.status(404).json({ message: "Plan not found" });
+        }
+        console.log(planData);
+        res.status(200).json(planData);
+    } catch (error) {
+        console.log("error in fetching plan data by id ..", error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+
 module.exports = {
     add_Plan,
     getPlans,
-    DeletePlan
+    DeletePlan,
+    GetplanById
 };
