@@ -123,8 +123,6 @@ function Subcription() {
                         </div>
                     </div>
                 </div>
-
-
                 <div className="bg-white shadow px-4 md:px-10 pt-4 md:pt-7 pb-5 overflow-y-auto">
                     <table className="w-full whitespace-nowrap">
                         <thead>
@@ -150,7 +148,6 @@ function Subcription() {
                                     </td>
                                     <td className="pl-8">
                                         <p className="text-sm font-medium leading-none text-gray-800">${plan.price}</p>
-
                                     </td>
                                     <td className="pl-8">
                                         <p className="font-medium">
@@ -169,7 +166,6 @@ function Subcription() {
                                             <div className="px-2 py-1 rounded-full bg-red-200 text-red-700  ">Inactive</div>
                                         )}
                                     </td>
-
                                     <td className="pl-12">
                                         <div
                                             className="flex items-center"
@@ -190,8 +186,6 @@ function Subcription() {
                                             </span>
                                         </div>
                                     </td>
-
-
                                     <td className="px-7 2xl:px-0">
                                         <button
                                             onClick={() => handleEdit(plan._id)}
@@ -206,7 +200,6 @@ function Subcription() {
                                         >
                                             Delete
                                         </button>
-
                                     </td>
                                 </tr>
                             ))}

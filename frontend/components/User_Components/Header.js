@@ -47,7 +47,7 @@ function Header() {
         router.push('/page/Mybots');
     };
 
-    const handleExchanges = ()=>{
+    const handleExchanges = () => {
         router.push('/page/MyExchanges')
     }
 
@@ -71,7 +71,7 @@ function Header() {
                     </div>
                     <ul className="hidden md:flex flex-auto space-x-2 pl-48 pt-2">
                         <li onClick={() => selectMenuItem(0)} className={`${style[0] ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-8`}>Home</li>
-                        <li onClick={() => selectMenuItem(1)} className={`${style[1] ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-4`}>Pricing</li>
+                        <Link href='/page/Pricing_Page'>    <li onClick={() => selectMenuItem(1)} className={`${style[1] ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-4`}>Pricing</li></Link>
                         <li onClick={() => selectMenuItem(2)} className={`${style[2] ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-4`}>Learn</li>
                         <li onClick={() => selectMenuItem(3)} className={`${style[3] ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-4`}>Company</li>
                         <li

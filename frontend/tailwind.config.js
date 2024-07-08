@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class', // Add dark mode support
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -12,8 +13,7 @@ module.exports = {
     extend: {
       width: {
         'custom-sidebar': '40%', // Custom width for the sidebar
-        'custom-register': '60%',
-         // Custom width for the register
+        'custom-register': '60%', // Custom width for the register
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
