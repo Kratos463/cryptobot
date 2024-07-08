@@ -39,6 +39,19 @@ const getPlans = asyncHandler(async (req, res) => {
         res.status(500).json({ message: 'Error in fetching plans' });
     }
 })
+// -------------Get Active plans ------------
+
+const getPlansActive = asyncHandler(async (req, res) => {
+    try {
+        const activePlans = await Plan.find({ status: true });
+
+        res.status(200).json({ success: true, plans: activePlans });
+    } catch (error) {
+        res.status(500).json({ success: false, message: `Failed to fetch active plans: ${error.message}` });
+    }
+});
+
+
 
 // --------Delete the subcription plan by id--------------
 
@@ -112,11 +125,39 @@ const update_Plan = asyncHandler(async (req, res) => {
     }
 })
 
+// ----------update plan status -----------------
+
+
+const updatePlanStatus = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    try {
+        const plan = await Plan.findById(id);
+        if (!plan) {
+            return res.status(404).json({ success: false, message: 'Plan not found' });
+        }
+
+        plan.status = status;
+        await plan.save();
+        
+        res.status(200).json({ success: true, data: plan });
+    } catch (error) {
+        res.status(500).json({ success: false, message: `Failed to update plan status: ${error.message}` });
+    }
+});
+
+
+
+
+
 
 module.exports = {
     add_Plan,
     getPlans,
     DeletePlan,
     GetplanById,
-    update_Plan
+    update_Plan,
+    updatePlanStatus,
+    getPlansActive
 };
