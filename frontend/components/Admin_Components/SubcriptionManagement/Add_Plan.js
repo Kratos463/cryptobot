@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
+
 function Add_Plan() {
     const [planName, setPlanName] = useState('');
     const [price, setPrice] = useState('');
