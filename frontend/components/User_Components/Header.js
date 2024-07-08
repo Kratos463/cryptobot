@@ -9,7 +9,7 @@ import Link from 'next/link';
 function Header() {
     const initialStyle = [true, false, false, false, false, false];
     const [style, setStyle] = useState(initialStyle);
-    const [dropDown, setDropDown] = useState(true);
+    const [dropDown, setDropDown] = useState(false);
     const [text, setText] = useState("");
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const { logout } = useContext(AuthContext);
@@ -62,6 +62,25 @@ function Header() {
         setDropDown(true);
     };
 
+     const menuItems = [
+        { text: 'Home', path: '/page/Home' },
+        { text: 'Pricing', path: '/page/Pricing_Page' },
+        { text: 'Learn', path: '/page/Learn_Page' },
+        { text: 'Company', path: '/page/Company_Page' },
+    ];
+
+    
+    const handleMenuItemClick = (index, path) => {
+        setSelected(index);
+        setIsDropdownOpen(false); 
+        router.push(path); 
+    };
+
+    
+    const isActiveMenuItem = (path) => {
+        return router.pathname === path;
+    };
+
     return (
         <div className="2xl:container 2xl:mx-auto fixed top-0 left-0 w-full z-50" style={{ backgroundColor: '#040429' }}>
             <div className="bg-gray-900 bg-opacity-50 shadow-lg py-5 px-7 shadow-blue">
@@ -70,12 +89,17 @@ function Header() {
                         <img src='/Assets/cryptobotLogo.png' alt='Cryptobot Logo' width={110} height={95} />
                     </div>
                     <ul className="hidden md:flex flex-auto space-x-2 pl-48 pt-2">
-                        <li onClick={() => selectMenuItem(0)} className={`${style[0] ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-8`}>Home</li>
-                        <Link href='/page/Pricing_Page'>    <li onClick={() => selectMenuItem(1)} className={`${style[1] ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-4`}>Pricing</li></Link>
-                        <li onClick={() => selectMenuItem(2)} className={`${style[2] ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-4`}>Learn</li>
-                        <li onClick={() => selectMenuItem(3)} className={`${style[3] ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-4`}>Company</li>
+                        {menuItems.map((item, index) => (
+                            <li
+                                key={index}
+                                onClick={() => handleMenuItemClick(index, item.path)}
+                                className={`${isActiveMenuItem(item.path) ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-4`}
+                            >
+                                {item.text}
+                            </li>
+                        ))}
                         <li
-                            onClick={() => handleItemClick(4)}
+                            onClick={() => setSelected(4)}
                             className={`${selected === 4 ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-4 relative`}
                         >
                             Settings
@@ -123,15 +147,15 @@ function Header() {
                             <path d="M13.73 21C13.5542 21.3031 13.3019 21.5547 12.9982 21.7295C12.6946 21.9044 12.3504 21.9965 12 21.9965C11.6496 21.9965 11.3054 21.9044 11.0018 21.7295C10.6982 21.5547 10.4458 21.3031 10.27 21" stroke="#3B82F6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                         <div className="relative inline-block text-left">
-                            <div className="h-8 w-8 mb-4 lg:mb-0 mr-2 cursor-pointer" onClick={toggleDropdown}>
-                                <FaCircleUser className="h-full w-full" style={{ color: '#043bbc' }} />
+                            <div className="h-8 w-8 mb-4 lg:mb-0 mr-2 cursor-pointer">
+                                <FaCircleUser className="h-full w-full" style={{ color: '#043bbc' }} onClick={() => setDropDown(!dropDown)} />
                             </div>
-                            {dropdownOpen && (
+                            {dropDown && (
                                 <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                                     <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                        <button onClick={handleProfile} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">Profile</button>
-                                        <button onClick={handleBot} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">My Bots</button>
-                                        <button onClick={handleExchanges} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">My Exchanges</button>
+                                        <button onClick={() => handleMenuItemClick(5, '/Profile/ProfileDashboard')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">Profile</button>
+                                        <button onClick={() => handleMenuItemClick(6, '/page/Mybots')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">My Bots</button>
+                                        <button onClick={() => handleMenuItemClick(7, '/page/MyExchanges')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">My Exchanges</button>
                                         <button onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">Logout</button>
                                     </div>
                                 </div>
@@ -150,11 +174,11 @@ function Header() {
                     </div>
                     <div className="relative">
                         <ul id="list" className={`${dropDown ? 'hidden' : 'block'} font-normal text-base leading-4 absolute top-2 w-full rounded shadow-md`}>
-                            <li onClick={() => setSelectedText("Home")} className="px-4 py-3 text-gray-600 bg-gray-50 border border-gray-50 hover:bg-gray-100 duration-100 cursor-pointer text-xs leading-3">Home</li>
-                            <li onClick={() => setSelectedText("Pricing")} className="px-4 py-3 text-gray-600 bg-gray-50 border border-gray-50 hover:bg-gray-100 duration-100 cursor-pointer text-xs leading-3">Pricing</li>
-                            <li onClick={() => setSelectedText("Learn")} className="px-4 py-3 text-gray-600 bg-gray-50 border border-gray-50 hover:bg-gray-100 duration-100 cursor-pointer text-xs leading-3">Learn</li>
-                            <li onClick={() => setSelectedText("Company")} className="px-4 py-3 text-gray-600 bg-gray-50 border border-gray-50 hover:bg-gray-100 duration-100 cursor-pointer text-xs leading-3">Company</li>
-                            <li onClick={() => setSelectedText("Settings")} className="px-4 py-3 text-gray-600 bg-gray-50 border border-gray-50 hover:bg-gray-100 duration-100 cursor-pointer text-xs leading-3">Settings</li>
+                            {menuItems.map((item, index) => (
+                                <li key={index} onClick={() => setSelectedText(item.text)} className={`px-4 py-3 ${isActiveMenuItem(item.path) ? 'text-white bg-gray-600' : 'text-gray-600 bg-gray-50 hover:bg-gray-100'} border border-gray-50 duration-100 cursor-pointer text-xs leading-3`}>
+                                    {item.text}
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 </div>
@@ -162,6 +186,8 @@ function Header() {
         </div>
     );
 }
+
+   
 
 export default Header;
 
