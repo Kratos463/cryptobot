@@ -22,7 +22,7 @@ function Subcription() {
         };
 
         fetchPlans();
-    }, []);
+    }, [plans]);
 
     // -------------Redirect to edit page to edit the subcription plan --------------
 

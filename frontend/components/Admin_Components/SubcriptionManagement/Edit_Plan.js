@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { useRouter } from "next/router";
+import Swal from 'sweetalert2';
+
 
 
 function Edit_Plan() {
@@ -32,7 +34,7 @@ function Edit_Plan() {
             fetchPlanDetails();
         }
     }, [id]);
-    console.log(id)
+    
     const handleFeatureChange = (index, value) => {
         const newFeatures = [...features];
         newFeatures[index] = value;
@@ -50,7 +52,7 @@ function Edit_Plan() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         try {
             const planData = {
                 planName,
@@ -59,12 +61,27 @@ function Edit_Plan() {
                 features,
                 description
             };
-
+    
             const response = await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/update_plan/${id}`, planData);
-            console.log('Plan updated:', response.data);
-            // Optionally show success message or navigate to another page
+            Swal.fire({
+                
+                icon: "success",
+                title: "Updated plan successfully..",
+                showConfirmButton: false,
+                timer: 1500
+            });
+    
+            
+    
         } catch (error) {
             console.error('Error updating plan:', error);
+            Swal.fire({
+               
+                icon: "error",
+                title: "There was an error updating the plan",
+                showConfirmButton: true,
+                timer: 1500
+            });
         }
     };
 

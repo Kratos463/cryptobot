@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 function Add_Plan() {
     const [planName, setPlanName] = useState('');
@@ -34,10 +35,23 @@ function Add_Plan() {
                 features,
                 description
             };
-            console.log(planData);
+
             const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/add_subscription`, planData);
-            console.log(response.data);
+            Swal.fire({
+                icon: "success",
+                title: "Plan Saved successfully..",
+                showConfirmButton: true,
+                timer: 1500
+            });
+
         } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Error in saving plan",
+                text: "Something went wrong!",
+                showConfirmButton: true,
+                timer: 1500
+            });
             console.log('Error occurred in saving plan', error);
         }
     };
@@ -185,7 +199,7 @@ function Add_Plan() {
                                                     type="button"
                                                     onClick={() => removeFeature(index)}
                                                     className="mt- p-3 bg-indigo-700 ml-2 text-white rounded"
-                                            style={{ backgroundColor: '#eb2121' }}
+                                                    style={{ backgroundColor: '#eb2121' }}
                                                 >
                                                     Remove
                                                 </button>
