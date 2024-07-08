@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 
 function Subcription() {
     const [plans, setPlans] = useState([]);
+
     const router = useRouter();
 
     // -----------Fetching data from backend to list the subcription plans---------------
@@ -82,6 +83,28 @@ function Subcription() {
         return words.slice(0, length).join(' ') + '...';
     };
 
+    // -------------Status updation --------------------
+
+    const handleStatusToggle = async (planId) => {
+        try {
+            const planToUpdate = plans.find(plan => plan._id === planId);
+            const newStatus = !planToUpdate.status; 
+            await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/update_plan_status/${planId}`, { status: newStatus });
+            setPlans(plans.map(plan => {
+                if (plan._id === planId) {
+                    return { ...plan, status: newStatus };
+                }
+                return plan;
+            }));
+        } catch (error) {
+            console.error('Failed to update plan status:', error);
+            Swal.fire({
+                title: "Error!",
+                text: "Failed to update the plan status. Please try again later.",
+                icon: "error"
+            });
+        }
+    };
 
     // ----------Style for description hover --------------
 
@@ -159,11 +182,11 @@ function Subcription() {
                                             <p key={index} className="font-medium">{feature}</p>
                                         ))}
                                     </td>
-                                    <td className="pl-12">
-                                        {plan.status === "active" ? (
+                                    <td onClick={() => handleStatusToggle(plan._id)} className="cursor-pointer pl-12">
+                                        {plan.status ? (
                                             <div className="px-2 py-1 rounded-full bg-green-200 text-green-700">Active</div>
                                         ) : (
-                                            <div className="px-2 py-1 rounded-full bg-red-200 text-red-700  ">Inactive</div>
+                                            <div className="px-2 py-1 rounded-full bg-red-200 text-red-700">Inactive</div>
                                         )}
                                     </td>
                                     <td className="pl-12">

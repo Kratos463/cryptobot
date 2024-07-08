@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { useRouter } from 'next/router';
 
 
 function Add_Plan() {
@@ -9,6 +10,7 @@ function Add_Plan() {
     const [duration, setDuration] = useState('Monthly');
     const [features, setFeatures] = useState(['']);
     const [description, setDescription] = useState('');
+    const router = useRouter();
 
     const handleFeatureChange = (index, value) => {
         const newFeatures = [...features];
@@ -44,7 +46,8 @@ function Add_Plan() {
                 showConfirmButton: true,
                 timer: 1500
             });
-
+            router.push('/Admin/SubcriptionManagement/SubcriptionList');
+            
         } catch (error) {
             Swal.fire({
                 icon: "error",

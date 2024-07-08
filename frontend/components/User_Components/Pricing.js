@@ -7,7 +7,7 @@ function Pricing() {
     useEffect(() => {
         const fetchPlans = async () => {
             try {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/fetch_subcriptionPlans`);
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/get_subcriptionplans`);
                 setPlans(response.data.plans); 
             } catch (error) {
                 console.error('Error fetching plans:', error);
@@ -24,8 +24,8 @@ function Pricing() {
     return (
         <section className="bg-gray-900 py-12 mt-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-8">
-                    <h2 className="text-2xl font-extrabold text-white sm:text-2xl">
+                <div className="text-center mb-12">
+                    <h2 className="text-2xl font-bold text-white sm:text-2xl">
                         Pricing Plans
                     </h2>
                     <p className="mt-2 text-xl text-gray-400">
