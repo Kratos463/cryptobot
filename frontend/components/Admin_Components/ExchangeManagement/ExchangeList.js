@@ -52,7 +52,7 @@ function ExchangeList() {
             });
 
             if (result.isConfirmed) {
-                const response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/delete_plan/${planId}`);
+                const response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/delete_exchange/${exchangeId}`);
 
                 Swal.fire({
                     title: "Deleted!",
