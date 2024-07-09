@@ -136,7 +136,7 @@ function ExchangeList() {
                     <div className="sm:flex items-center justify-between">
                         <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800">Exchanges</p>
                         <div className="mr-9">
-                            <Link href='/Admin/SubcriptionManagement/Addplan_Page'>
+                            <Link href='/Admin/Exchange/Add_exchange_page'>
                                 <button className="inline-flex sm:ml-2 mt-4 sm:mt-0 items-start justify-start px-3 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded" style={{ backgroundColor: '#0086c9' }}>
                                     <p className="text-sm font-medium leading-none text-white">+ Add Exchange</p>
                                 </button>

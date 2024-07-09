@@ -2,28 +2,43 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import { useRouter } from "next/router";
 import Swal from 'sweetalert2';
+import Select from 'react-select';
 
+const supportOptions = [
+    { value: 'Email', label: 'Email' },
+    { value: 'Chat', label: 'Chat' },
+    { value: 'Phone', label: 'Phone' },
+    { value: 'Video Call', label: 'Video Call' },
+    { value: '24/7', label: '24/7' },
+
+];
 
 
 function Edit_Plan() {
     const router = useRouter();
-    const { id } = router.query; 
+    const { id } = router.query;
     const [planName, setPlanName] = useState('');
     const [price, setPrice] = useState('');
     const [duration, setDuration] = useState('Monthly');
-    const [features, setFeatures] = useState(['']);
+    const [webhookUrls, setWebhookUrls] = useState('1');
+    const [exchanges, setExchanges] = useState('1');
+    const [support, setSupport] = useState([]);
     const [description, setDescription] = useState('');
+
+  
 
     useEffect(() => {
 
         const fetchPlanDetails = async () => {
             try {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/get_plan/${id}`);
-                const { planName, price, duration, features, description } = response.data;
+                const { planName, price, duration, webhookUrls, exchanges, support, description } = response.data;
                 setPlanName(planName);
                 setPrice(price);
                 setDuration(duration);
-                setFeatures(features);
+                setWebhookUrls(webhookUrls);
+                setExchanges(exchanges);
+                setSupport(support)
                 setDescription(description);
             } catch (error) {
                 console.error('Error fetching plan details:', error);
@@ -34,49 +49,37 @@ function Edit_Plan() {
             fetchPlanDetails();
         }
     }, [id]);
-    
-    const handleFeatureChange = (index, value) => {
-        const newFeatures = [...features];
-        newFeatures[index] = value;
-        setFeatures(newFeatures);
-    };
 
-    const addFeature = () => {
-        setFeatures([...features, '']);
-    };
-
-    const removeFeature = (index) => {
-        const newFeatures = features.filter((_, i) => i !== index);
-        setFeatures(newFeatures);
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         try {
             const planData = {
                 planName,
                 price,
                 duration,
-                features,
+                webhookUrls,
+                exchanges,
+                support: support.map(option => option.value),
                 description
             };
-    
+
             const response = await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/update_plan/${id}`, planData);
             Swal.fire({
-                
+
                 icon: "success",
                 title: "Updated plan successfully..",
                 showConfirmButton: false,
                 timer: 1500
             });
-    
-            
-    
+
+
+
         } catch (error) {
             console.error('Error updating plan:', error);
             Swal.fire({
-               
+
                 icon: "error",
                 title: "There was an error updating the plan",
                 showConfirmButton: true,
@@ -210,36 +213,48 @@ function Edit_Plan() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="pt-4 border-gray-300 mt-2 px-7">
-                                        <p className="text-base font-medium leading-4 text-gray-800">
-                                            Plan Features
-                                        </p>
-                                        {features.map((feature, index) => (
-                                            <div key={index} className="flex items-center mt-2">
-                                                <input
-                                                    type="text"
-                                                    value={feature}
-                                                    onChange={(e) => handleFeatureChange(index, e.target.value)}
-                                                    className="w-full p-3 border border-gray-300 rounded outline-none focus:bg-gray-50"
-                                                />
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeFeature(index)}
-                                                    className="mt- p-3 bg-indigo-700 ml-2 text-white rounded"
-                                                    style={{ backgroundColor: '#eb2121' }}
-                                                >
-                                                    Remove
-                                                </button>
-                                            </div>
-                                        ))}
-                                        <button
-                                            type="button"
-                                            onClick={addFeature}
-                                            className="mt-2 p-3 bg-indigo-700 text-white rounded"
-                                            style={{ backgroundColor: '#0086c9' }}
-                                        >
-                                            Add Feature
-                                        </button>
+                                    <div className="grid w-full grid-cols-1 lg:grid-cols-2 md:grid-cols-1 gap-7 mt-7 pl-8">
+                                        <div>
+                                            <p className="text-base font-medium leading-none text-gray-800">
+                                                Number of Exchanges
+                                            </p>
+                                            <input
+                                                type="number"
+                                                value={exchanges}
+                                                onChange={(e) => setExchanges(e.target.value)}
+                                                className="w-full p-3 mt-2 border border-gray-300 rounded outline-none focus:bg-gray-50"
+                                                min="1"
+                                                max="100"
+                                                step="1"
+                                            />
+                                        </div>
+                                        <div>
+                                            <p className="text-base font-medium leading-none text-gray-800 pr-2">
+                                                Number of Webhook URLs
+                                            </p>
+                                            <input
+                                                type="number"
+                                                value={webhookUrls}
+                                                onChange={(e) => setWebhookUrls(e.target.value)}
+                                                className="w-full p-3 mt-2 border border-gray-300 rounded outline-none focus:bg-gray-50"
+                                                min="1"
+                                                max="100"
+                                                step="1"
+                                            />
+                                        </div>
+                                        <div>
+                                            <p className="text-base font-medium leading-none text-gray-800">
+                                                Support for customer
+                                            </p>
+                                            <Select
+                                                isMulti
+                                                value={support}
+                                                onChange={setSupport}
+                                                options={supportOptions}
+                                                className="w-full mt-2"
+                                                classNamePrefix="select"
+                                            />
+                                        </div>
                                     </div>
                                     <hr className="h-[1px] bg-gray-100 my-4" />
                                     <div className="flex flex-col flex-wrap items-center justify-center w-full px-7 lg:flex-row lg:justify-end md:justify-end gap-x-4 gap-y-4">
