@@ -8,6 +8,9 @@ const {add_Plan,
     updatePlanStatus,
     getPlansActive}= require('../controllers/Admin_Controllers/subcriptionController');
 
+const {createExchange,
+    getExchange} = require('../controllers/Admin_Controllers/ExchangeController')
+
 const router = Router();
 router.post('/login',AdminLogin);
 
@@ -19,5 +22,9 @@ router.get('/get_plan/:id',GetplanById)
 router.put('/update_plan/:id',update_Plan)
 router.put('/update_plan_status/:id',updatePlanStatus)
 router.get('/get_subcriptionplans',getPlansActive)
+
+//-------Exchange Routes -----------
+router.post('/create_exchange',createExchange);
+router.get('/get_exchange',getExchange)
 
 module.exports = router
