@@ -106,7 +106,9 @@ const update_Plan = asyncHandler(async (req, res) => {
     const { planName,
         price,
         duration,
-        features,
+        webhookUrls,
+        exchanges,
+        support,
         description } = req.body;
 
     try {
@@ -118,8 +120,10 @@ const update_Plan = asyncHandler(async (req, res) => {
         plan.planName = planName;
         plan.price = price;
         plan.duration = duration;
-        plan.features = features;
+        plan.webhookUrls = webhookUrls;
         plan.description = description;
+        plan.exchanges = exchanges;
+        plan.support = support;
 
         const updatedPlan = await plan.save();
         res.status(200).json({
