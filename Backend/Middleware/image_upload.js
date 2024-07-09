@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
 // Initialize upload
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 1000000 }, // Limit file size to 1MB
+    limits: { fileSize: 9000000 }, // Limit file size to 1MB
     fileFilter: function(req, file, cb) {
         checkFileType(file, cb);
     }

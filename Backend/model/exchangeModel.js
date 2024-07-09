@@ -11,7 +11,7 @@ const exchangeSchema = new mongoose.Schema({
     },
     status: {
         type: Boolean,
-        required: true
+       default:false
     },
     imageUrl: {
         type: String,
