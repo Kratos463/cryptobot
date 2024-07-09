@@ -2,30 +2,26 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
+import Select from 'react-select';
 
+const supportOptions = [
+    { value: 'Email', label: 'Email' },
+    { value: 'Chat', label: 'Chat' },
+    { value: 'Phone', label: 'Phone' },
+    { value: 'Video Call', label: 'Video Call' },
+    { value: '24/7', label: '24/7' },
+
+];
 
 function Add_Plan() {
     const [planName, setPlanName] = useState('');
     const [price, setPrice] = useState('');
     const [duration, setDuration] = useState('Monthly');
-    const [features, setFeatures] = useState(['']);
+    const [webhookUrls, setWebhookUrls] = useState('1');
+    const [exchanges, setExchanges] = useState('1');
+    const [support, setSupport] = useState([]);
     const [description, setDescription] = useState('');
     const router = useRouter();
-
-    const handleFeatureChange = (index, value) => {
-        const newFeatures = [...features];
-        newFeatures[index] = value;
-        setFeatures(newFeatures);
-    };
-
-    const addFeature = () => {
-        setFeatures([...features, '']);
-    };
-
-    const removeFeature = (index) => {
-        const newFeatures = features.filter((_, i) => i !== index);
-        setFeatures(newFeatures);
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -35,7 +31,9 @@ function Add_Plan() {
                 planName,
                 price,
                 duration,
-                features,
+                webhookUrls,
+                exchanges,
+                support: support.map(option => option.value),
                 description
             };
 
@@ -47,7 +45,7 @@ function Add_Plan() {
                 timer: 1500
             });
             router.push('/Admin/SubcriptionManagement/SubcriptionList');
-            
+
         } catch (error) {
             Swal.fire({
                 icon: "error",
@@ -91,6 +89,7 @@ function Add_Plan() {
                                                     Plan Name
                                                 </p>
                                                 <input
+                                                    placeholder="Enter subcription plan name"
                                                     type="text"
                                                     value={planName}
                                                     onChange={(e) => setPlanName(e.target.value)}
@@ -102,7 +101,8 @@ function Add_Plan() {
                                                     Price
                                                 </p>
                                                 <input
-                                                    type="text"
+                                                    type="number"
+                                                    placeholder="Enter plan price"
                                                     value={price}
                                                     onChange={(e) => setPrice(e.target.value)}
                                                     className="w-full p-3 mt-2 border border-gray-300 rounded outline-none focus:bg-gray-50"
@@ -179,6 +179,7 @@ function Add_Plan() {
                                                     Description
                                                 </p>
                                                 <input
+                                                    placeholder="Explain highlight of plan"
                                                     type="text"
                                                     value={description}
                                                     onChange={(e) => setDescription(e.target.value)}
@@ -186,37 +187,49 @@ function Add_Plan() {
                                                 />
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="pt-4 border-gray-300 mt-2 px-7">
-                                        <p className="text-base font-medium leading-4 text-gray-800">
-                                            Plan Features
-                                        </p>
-                                        {features.map((feature, index) => (
-                                            <div key={index} className="flex items-center mt-2">
+                                        <div className="grid w-full grid-cols-1 lg:grid-cols-2 md:grid-cols-1 gap-7 mt-7">
+                                            <div>
+                                                <p className="text-base font-medium leading-none text-gray-800">
+                                                    Number of Exchanges
+                                                </p>
                                                 <input
-                                                    type="text"
-                                                    value={feature}
-                                                    onChange={(e) => handleFeatureChange(index, e.target.value)}
-                                                    className="w-full p-3 border border-gray-300 rounded outline-none focus:bg-gray-50"
+                                                    type="number"
+                                                    value={exchanges}
+                                                    onChange={(e) => setExchanges(e.target.value)}
+                                                    className="w-full p-3 mt-2 border border-gray-300 rounded outline-none focus:bg-gray-50"
+                                                    min="1"
+                                                    max="100"
+                                                    step="1"
                                                 />
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeFeature(index)}
-                                                    className="mt- p-3 bg-indigo-700 ml-2 text-white rounded"
-                                                    style={{ backgroundColor: '#eb2121' }}
-                                                >
-                                                    Remove
-                                                </button>
                                             </div>
-                                        ))}
-                                        <button
-                                            type="button"
-                                            onClick={addFeature}
-                                            className="mt-2 p-3 bg-indigo-700 text-white rounded"
-                                            style={{ backgroundColor: '#0086c9' }}
-                                        >
-                                            Add Feature
-                                        </button>
+                                            <div>
+                                                <p className="text-base font-medium leading-none text-gray-800">
+                                                    Number of Webhook URLs
+                                                </p>
+                                                <input
+                                                    type="number"
+                                                    value={webhookUrls}
+                                                    onChange={(e) => setWebhookUrls(e.target.value)}
+                                                    className="w-full p-3 mt-2 border border-gray-300 rounded outline-none focus:bg-gray-50"
+                                                    min="1"
+                                                    max="100"
+                                                    step="1"
+                                                />
+                                            </div>
+                                            <div>
+                                                <p className="text-base font-medium leading-none text-gray-800">
+                                                    Support for customer
+                                                </p>
+                                                <Select
+                                                    isMulti
+                                                    value={support}
+                                                    onChange={setSupport}
+                                                    options={supportOptions}
+                                                    className="w-full mt-2"
+                                                    classNamePrefix="select"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
                                     <hr className="h-[1px] bg-gray-100 my-4" />
                                     <div className="flex flex-col flex-wrap items-center justify-center w-full px-7 lg:flex-row lg:justify-end md:justify-end gap-x-4 gap-y-4">

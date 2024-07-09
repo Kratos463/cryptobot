@@ -62,21 +62,19 @@ function Header() {
         setDropDown(true);
     };
 
-     const menuItems = [
+    const menuItems = [
         { text: 'Home', path: '/page/Home' },
         { text: 'Pricing', path: '/page/Pricing_Page' },
         { text: 'Learn', path: '/page/Learn_Page' },
         { text: 'Company', path: '/page/Company_Page' },
     ];
 
-    
     const handleMenuItemClick = (index, path) => {
         setSelected(index);
-        setIsDropdownOpen(false); 
-        router.push(path); 
+        setIsDropdownOpen(false);
+        router.push(path);
     };
 
-    
     const isActiveMenuItem = (path) => {
         return router.pathname === path;
     };
@@ -99,7 +97,7 @@ function Header() {
                             </li>
                         ))}
                         <li
-                            onClick={() => setSelected(4)}
+                            onClick={() => handleItemClick(4)}
                             className={`${selected === 4 ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-4 relative`}
                         >
                             Settings
@@ -153,41 +151,30 @@ function Header() {
                             {dropDown && (
                                 <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                                     <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                        <button onClick={() => handleMenuItemClick(5, '/Profile/ProfileDashboard')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">Profile</button>
-                                        <button onClick={() => handleMenuItemClick(6, '/page/Mybots')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">My Bots</button>
-                                        <button onClick={() => handleMenuItemClick(7, '/page/MyExchanges')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">My Exchanges</button>
-                                        <button onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">Logout</button>
+                                        <span
+                                            onClick={handleProfile}
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
+                                            role="menuitem"
+                                        >
+                                            Profile
+                                        </span>
+                                        <span
+                                            onClick={handleLogout}
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
+                                            role="menuitem"
+                                        >
+                                            Logout
+                                        </span>
                                     </div>
                                 </div>
                             )}
                         </div>
+                        <ToastContainer />
                     </div>
                 </nav>
-                <div className="block md:hidden w-full mt-5">
-                    <div onClick={() => setDropDown(!dropDown)} className="cursor-pointer px-4 py-3 text-white bg-indigo-600 rounded flex justify-between items-center w-full">
-                        <div className="flex space-x-2">
-                            <span id="s1" className={`${text.length !== 0 ? '' : 'hidden'} font-semibold text-sm leading-3`}>Selected: </span><p id="textClicked" className="font-normal text-sm leading-3">{text ? text : "Headers"}</p>
-                        </div>
-                        <svg id="ArrowSVG" className={`${dropDown ? '' : 'rotate-180'} transform duration-100`} width={24} height={24} viewBox="0 0 24 24" fill="none">
-                            <path d="M6 9L12 15L18 9" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                    </div>
-                    <div className="relative">
-                        <ul id="list" className={`${dropDown ? 'hidden' : 'block'} font-normal text-base leading-4 absolute top-2 w-full rounded shadow-md`}>
-                            {menuItems.map((item, index) => (
-                                <li key={index} onClick={() => setSelectedText(item.text)} className={`px-4 py-3 ${isActiveMenuItem(item.path) ? 'text-white bg-gray-600' : 'text-gray-600 bg-gray-50 hover:bg-gray-100'} border border-gray-50 duration-100 cursor-pointer text-xs leading-3`}>
-                                    {item.text}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>
     );
 }
 
-   
-
 export default Header;
-

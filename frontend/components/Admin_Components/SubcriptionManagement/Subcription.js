@@ -88,7 +88,7 @@ function Subcription() {
     const handleStatusToggle = async (planId) => {
         try {
             const planToUpdate = plans.find(plan => plan._id === planId);
-            const newStatus = !planToUpdate.status; 
+            const newStatus = !planToUpdate.status;
             await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/update_plan_status/${planId}`, { status: newStatus });
             setPlans(plans.map(plan => {
                 if (plan._id === planId) {
@@ -178,10 +178,11 @@ function Subcription() {
                                         </p>
                                     </td>
                                     <td className="pl-12">
-                                        {plan.features.map((feature, index) => (
-                                            <p key={index} className="font-medium">{feature}</p>
-                                        ))}
+                                        <p className="font-medium">Webhook URLs: {plan.webhookUrls}</p>
+                                        <p className="font-medium">Support: {plan.support.join(', ')}</p>
+                                        <p className="font-medium">Exchanges: {plan.exchanges}</p>
                                     </td>
+
                                     <td onClick={() => handleStatusToggle(plan._id)} className="cursor-pointer pl-12">
                                         {plan.status ? (
                                             <div className="px-2 py-1 rounded-full bg-green-200 text-green-700">Active</div>

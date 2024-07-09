@@ -8,7 +8,7 @@ function Pricing() {
         const fetchPlans = async () => {
             try {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/get_subcriptionplans`);
-                setPlans(response.data.plans); 
+                setPlans(response.data.plans);
             } catch (error) {
                 console.error('Error fetching plans:', error);
             }
@@ -18,7 +18,7 @@ function Pricing() {
     }, []);
 
     if (plans.length === 0) {
-        return <p>Loading...</p>; 
+        return <p>Loading...</p>;
     }
 
     return (
@@ -26,10 +26,10 @@ function Pricing() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
                     <h2 className="text-2xl font-bold text-white sm:text-2xl">
-                        Pricing Plans
+                        Pricing
                     </h2>
                     <p className="mt-2 text-xl text-gray-400">
-                        Simple, transparent pricing for your trading needs.               
+                        Simple, transparent pricing for your trading needs.
                     </p>
                 </div>
 
@@ -45,15 +45,27 @@ function Pricing() {
                                 <span className="text-xl font-medium text-gray-400">/mo</span>
                             </div>
                             <ul className="mb-8 space-y-4 text-gray-400">
-                                {plan.features.map((feature, index) => (
-                                    <li key={index} className="flex items-center">
-                                        <svg className="h-6 w-6 text-green-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                        </svg>
-                                        <span>{feature}</span>
-                                    </li>
-                                ))}
+                                <li className="flex items-center">
+                                    <svg className="h-6 w-6 text-green-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span>{plan.webhookUrls} Webhook URLs</span>
+                                </li>
+                                <li className="flex items-center">
+                                    <svg className="h-6 w-6 text-green-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span>{plan.support.join(', ')} Support </span>
+                                </li>
+                                <li className="flex items-center">
+                                    <svg className="h-6 w-6 text-green-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span> {plan.exchanges} Exchanges</span>
+                                </li>
+
                             </ul>
+
                             <a href="/order" className="block w-full py-3 px-6 text-center rounded-md text-white font-medium bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
                                 Buy Now
                             </a>
