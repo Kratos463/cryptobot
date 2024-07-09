@@ -21,10 +21,23 @@ const planSchema = mongoose.Schema({
         type: [String],
         required: true
     },
-    status:{
-        type:Boolean,
-        default:false,
+    status: {
+        type: Boolean,
+        default: false,
+    },
+    webhookUrls: {
+        type: Number,
+        required: true,
+    },
+    exchanges: {
+        type: Number,
+        required: true
+    },
+    support: {
+        type: [String],
+        required: true
     }
+
 }, {
     timestamps: true
 });

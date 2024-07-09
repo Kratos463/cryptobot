@@ -7,8 +7,9 @@ const Plan = require('../../model/planModel');
 const add_Plan = asyncHandler(async (req, res) => {
 
 
-    const { planName, price, duration, description, features } = req.body;
-    if (!planName || !price || !duration || !description || !features) {
+    const { planName, price, duration, description, webhookUrls,exchanges,support} = req.body;
+    console.log(planName, price, duration, description, webhookUrls,exchanges,support)
+    if (!planName || !price || !duration || !description || !webhookUrls || !exchanges || !support) {
         res.status(400);
         throw new Error('Please provide all required fields');
     }
@@ -18,7 +19,10 @@ const add_Plan = asyncHandler(async (req, res) => {
         price,
         duration,
         description,
-        features
+        webhookUrls,
+        exchanges,
+        support
+        
     });
 
     const createdPlan = await plan.save();
@@ -146,10 +150,6 @@ const updatePlanStatus = asyncHandler(async (req, res) => {
         res.status(500).json({ success: false, message: `Failed to update plan status: ${error.message}` });
     }
 });
-
-
-
-
 
 
 module.exports = {
