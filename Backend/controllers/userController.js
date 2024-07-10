@@ -130,6 +130,9 @@ const loginUser = asyncHandler(async (req, res) => {
     if (!user) {
         return res.status(401).json({ message: 'Invalid email or password' });
     }
+    if(!user.isBlock){
+        return res.status(401).json({message:"Accesss denied"})
+    }
     if (!user.emailVerified) {
         return res.status(401).json({ message: 'Please verify your email before logging in' });
     }
