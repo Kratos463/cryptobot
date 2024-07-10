@@ -86,18 +86,17 @@ function ExchangeList() {
         try {
             const exchangeToUpdate = exchange.find(exchange => exchange._id === exchangeId);
             const newStatus = !exchangeToUpdate.status;
-            await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/update_plan_status/${exchangeId}`, { status: newStatus });
-            setExchange(plans.map(plan => {
+            await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/update_exchange_status/${exchangeId}`, { status: newStatus });
+            setExchange(exchange.map(exchange => {
                 if (exchange._id === exchangeId) {
                     return { ...exchange, status: newStatus };
                 }
                 return exchange;
             }));
         } catch (error) {
-            console.error('Failed to update exchange status:', error);
             Swal.fire({
                 title: "Error!",
-                text: "Failed to update the exchange status. Please try again later.",
+                text: "Failed to update the exchange status.",
                 icon: "error"
             });
         }
@@ -151,7 +150,7 @@ function ExchangeList() {
                                 <th className="font-semibold text-left pl-8">Exchange Name</th>
                                 <th className="font-semibold text-left pl-12">Description</th>
                                 <th className="font-semibold text-left pl-12">Status</th>
-                                <th className="font-semibold text-left pl-14">Actions</th>
+                                <th className="font-semibold text-left pl-20">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="w-full">
@@ -201,7 +200,7 @@ function ExchangeList() {
                                             <div className="px-2 py-1 rounded-full bg-red-200 text-red-700">Inactive</div>
                                         )}
                                     </td>
-                                    <td className="px-7 2xl:px-0">
+                                    <td className=" pl-16 px-7 2xl:px-0">
                                         <button
                                             onClick={() => handleEdit(exchange._id)}
                                             className=" p-3 bg-indigo-600  text-white rounded">
