@@ -7,6 +7,7 @@ function AddExchange() {
     const [exchangeName, setExchangeName] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null);
     const router = useRouter();
 
     const handleSubmit = async (e) => {
@@ -17,6 +18,10 @@ function AddExchange() {
             formData.append('exchangeName', exchangeName);
             formData.append('description', description);
             formData.append('image', image);
+
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
 
             const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/create_exchange`, formData, {
                 headers: {
@@ -29,7 +34,7 @@ function AddExchange() {
                 showConfirmButton: true,
                 timer: 1500
             });
-            router.push('/Admin/Exchange/ExchangeList');
+            router.push('/Admin/Exchange/Exchange_page');
 
         } catch (error) {
             Swal.fire({
@@ -43,10 +48,18 @@ function AddExchange() {
         }
     };
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
         setImage(file);
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
     };
+
 
     return (
         <>
@@ -85,6 +98,14 @@ function AddExchange() {
                                                     className="w-full p-3 mt-2 border border-gray-300 rounded outline-none focus:bg-gray-50"
                                                 />
                                             </div>
+                                            {imagePreview && (
+                                                <div className="mt-4">
+                                                    <p className="text-base font-medium leading-none text-gray-800 ">
+                                                        Image Preview:
+                                                    </p>
+                                                    <img src={imagePreview} alt="Image Preview" className="mt-2 rounded w-20 h-20" />
+                                                </div>
+                                            )}
                                             <div>
                                                 <p className="text-base font-medium leading-none text-gray-800">
                                                     Description

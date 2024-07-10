@@ -19,7 +19,6 @@ function EditExchange() {
             try {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/get_exchange/${id}`);
                 const { exchangeName, description, imageUrl } = response.data;
-                console.log(imageUrl)
                 setExchangeName(exchangeName);
                 setDescription(description);
                 setImage(imageUrl);
@@ -101,7 +100,7 @@ function EditExchange() {
                                         <div className="grid w-full grid-cols-1 lg:grid-cols-2 md:grid-cols-1 gap-7 mt-7">
                                             <div>
                                                 <p className="text-base font-medium leading-none text-gray-800">
-                                            Exchange Name
+                                                    Exchange Name
                                                 </p>
                                                 <input
                                                     placeholder="Enter exchange name"
