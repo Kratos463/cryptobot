@@ -54,7 +54,7 @@ const exchangeName = selectedExchange;
         <div className="fixed w-full h-full items-center">
             <div className="flex flex-col items-center justify-center">
                 <div className="shadow rounded lg:w-[35%] md:w-[40%] w-full p-10 mt-8 mb-12">
-                    <p tabIndex={0} role="heading" aria-label="Configure Bybit API" className="text-xl font-bold leading-6 text-white text-center mt-16 mb-4">Configure Bybit API</p>
+                    <p tabIndex={0} role="heading" aria-label="Configure Bybit API" className="text-xl font-bold leading-6 text-white text-center mt-16 mb-4">Configure {exchangeName} API</p>
 
                     <div>
                         <label className="text-sm font-sans leading-none text-white mt-4 pt-8">Selected Exchange</label>
