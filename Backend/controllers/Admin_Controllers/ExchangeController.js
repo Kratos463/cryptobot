@@ -145,6 +145,20 @@ const updateExchangeStatus = asyncHandler(async (req, res) => {
     }
 })
 
+// ---------Get Active Exchanges ----------
+
+const getActiveExchanges = asyncHandler(async (req, res) => {
+    console.log("get active exchanges")
+    try {
+        const activeExchange = await Exchange.find({ status: true });
+        console.log(activeExchange)
+        res.status(200).json({ success: true, exchange: activeExchange });
+    } catch (error) {
+        res.status(500).json({ success: false, message: `Failed to fetch active exchange: ${error.message}` });
+    }
+});
+
+
 
 module.exports =
 {
@@ -153,5 +167,6 @@ module.exports =
     DeleteExchange,
     getExchangeById,
     Edit_exchange,
-    updateExchangeStatus
+    updateExchangeStatus,
+    getActiveExchanges
 };

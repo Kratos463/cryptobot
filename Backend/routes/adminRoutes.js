@@ -15,7 +15,8 @@ const {
     DeleteExchange,
     getExchangeById,
     Edit_exchange,
-    updateExchangeStatus } = require('../controllers/Admin_Controllers/ExchangeController')
+    updateExchangeStatus,
+    getActiveExchanges } = require('../controllers/Admin_Controllers/ExchangeController')
 
 const router = Router();
 
@@ -36,6 +37,7 @@ router.get('/get_exchange', getExchange);
 router.delete('/delete_exchange/:id', DeleteExchange);
 router.get('/get_exchange/:id', getExchangeById);
 router.put('/Edit_exchange', Edit_exchange);
-router.put('/update_exchange_status/:id', updateExchangeStatus)
+router.put('/update_exchange_status/:id', updateExchangeStatus);
+router.get('/get_exchanges',getActiveExchanges);
 
 module.exports = router
