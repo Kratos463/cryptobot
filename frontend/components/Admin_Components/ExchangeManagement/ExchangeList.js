@@ -7,10 +7,9 @@ import { useRouter } from 'next/router';
 
 function ExchangeList() {
     const [exchange, setExchange] = useState([]);
-
     const router = useRouter();
 
-    // -----------Fetching data from backend to list the subcription plans---------------
+    // -----------Fetching data from backend to list the exchange ---------------
 
     useEffect(() => {
         const fetchPlans = async () => {
@@ -26,17 +25,17 @@ function ExchangeList() {
         fetchPlans();
     }, [exchange]);
 
-    // -------------Redirect to edit page to edit the subcription plan --------------
+    // -------------Redirect to edit exchange--------------
 
     const handleEdit = (exchangeId) => {
 
         router.push({
-            pathname: '/Admin/SubcriptionManagement/Editplan_page',
+            pathname: '/Admin/Exchange/Edit_exchange_page',
             query: { id: exchangeId },
         });
     };
 
-    // -------------Deletion of subcription plan-----------------
+    // -------------Deletion of  exchange-----------------
 
     const handleDelete = async (exchangeId) => {
 
