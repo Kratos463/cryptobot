@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { AdminLogin } = require('../controllers/Admin_Controllers/LoginController');
-const { add_Plan,
+const { 
+    add_Plan,
     getPlans,
     DeletePlan,
     GetplanById,
@@ -8,11 +9,13 @@ const { add_Plan,
     updatePlanStatus,
     getPlansActive } = require('../controllers/Admin_Controllers/subcriptionController');
 
-const { createExchange,
+const { 
+    createExchange,
     getExchange,
     DeleteExchange,
     getExchangeById,
-    Edit_exchange } = require('../controllers/Admin_Controllers/ExchangeController')
+    Edit_exchange,
+    updateExchangeStatus } = require('../controllers/Admin_Controllers/ExchangeController')
 
 const router = Router();
 
@@ -31,7 +34,8 @@ router.get('/get_subcriptionplans', getPlansActive)
 router.post('/create_exchange', createExchange);
 router.get('/get_exchange', getExchange);
 router.delete('/delete_exchange/:id', DeleteExchange);
-router.get('/get_exchange/:id',getExchangeById);
-router.put('/Edit_exchange',Edit_exchange)
+router.get('/get_exchange/:id', getExchangeById);
+router.put('/Edit_exchange', Edit_exchange);
+router.put('/update_exchange_status/:id', updateExchangeStatus)
 
 module.exports = router

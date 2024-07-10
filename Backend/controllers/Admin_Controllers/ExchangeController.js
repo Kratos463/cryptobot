@@ -91,7 +91,7 @@ const getExchangeById = asyncHandler(async (req, res) => {
 // ---------------- Edit Exchange ------------
 
 const Edit_exchange = asyncHandler(async (req, res) => {
-   
+
     await new Promise((resolve, reject) => {
         upload(req, res, (err) => {
             if (err) {
@@ -103,32 +103,47 @@ const Edit_exchange = asyncHandler(async (req, res) => {
     });
 
     try {
-        const {  exchangeName, description,exchangeId } = req.body;
+        const { exchangeName, description, exchangeId } = req.body;
         let imageUrl = null;
-
         const existingExchange = await Exchange.findById(exchangeId);
         if (!existingExchange) {
             return res.status(404).json({ error: 'Exchange not found.' });
         }
-
         if (req.file) {
             imageUrl = path.join('/Assets', req.file.filename);
         }
-
         existingExchange.exchangeName = exchangeName || existingExchange.exchangeName;
         existingExchange.description = description || existingExchange.description;
         if (imageUrl) {
             existingExchange.imageUrl = imageUrl;
         }
-
         const updatedExchange = await existingExchange.save();
-
         res.status(200).json(updatedExchange);
     } catch (error) {
         res.status(500).json({ error: 'Failed to update exchange.' });
     }
 });
 
+
+// ---------- Update Exchange status --------
+
+const updateExchangeStatus = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    try {
+        const exchange = await Exchange.findById(id);
+        if (!exchange) {
+            return res.status(404).json({ success: false, message: 'Exchanage not found' })
+        }
+        exchange.status = status;
+        await exchange.save();
+        res.status(200).json({ success: true, data: exchange })
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Failed to update the status" });
+
+    }
+})
 
 
 module.exports =
@@ -137,5 +152,6 @@ module.exports =
     getExchange,
     DeleteExchange,
     getExchangeById,
-    Edit_exchange
+    Edit_exchange,
+    updateExchangeStatus
 };
