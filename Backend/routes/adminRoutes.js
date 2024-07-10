@@ -10,9 +10,12 @@ const { add_Plan,
 
 const { createExchange,
     getExchange,
-    DeleteExchange } = require('../controllers/Admin_Controllers/ExchangeController')
+    DeleteExchange,
+    getExchangeById,
+    Edit_exchange } = require('../controllers/Admin_Controllers/ExchangeController')
 
 const router = Router();
+
 router.post('/login', AdminLogin);
 
 // -----subcription routes---------
@@ -27,6 +30,8 @@ router.get('/get_subcriptionplans', getPlansActive)
 //-------Exchange Routes -----------
 router.post('/create_exchange', createExchange);
 router.get('/get_exchange', getExchange);
-router.delete('/delete_exchange/:id',DeleteExchange)
+router.delete('/delete_exchange/:id', DeleteExchange);
+router.get('/get_exchange/:id',getExchangeById);
+router.put('/Edit_exchange',Edit_exchange)
 
 module.exports = router

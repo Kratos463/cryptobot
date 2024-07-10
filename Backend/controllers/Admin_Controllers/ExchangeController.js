@@ -7,7 +7,7 @@ const path = require('path');
 // -------- Creating Exchanges -------------
 
 const createExchange = asyncHandler(async (req, res) => {
- 
+
     await new Promise((resolve, reject) => {
         upload(req, res, (err) => {
             if (err) {
@@ -71,9 +71,71 @@ const DeleteExchange = asyncHandler(async (req, res) => {
     }
 })
 
+// ----------  Get Exchange by id -----------------
+
+const getExchangeById = asyncHandler(async (req, res) => {
+
+    const { id } = req.params;
+    try {
+        const ExchangeData = await Exchange.findById(id);
+        if (!Exchange) {
+            res.status(200).json(ExchangeData)
+        }
+        res.status(200).json(ExchangeData)
+    } catch (error) {
+        console.error("error in fetching exchange data by id ..", error)
+        res.status(500).json({ message: "error in fetching exchange data by id" })
+    }
+})
+
+// ---------------- Edit Exchange ------------
+
+const Edit_exchange = asyncHandler(async (req, res) => {
+   
+    await new Promise((resolve, reject) => {
+        upload(req, res, (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+
+    try {
+        const {  exchangeName, description,exchangeId } = req.body;
+        let imageUrl = null;
+
+        const existingExchange = await Exchange.findById(exchangeId);
+        if (!existingExchange) {
+            return res.status(404).json({ error: 'Exchange not found.' });
+        }
+
+        if (req.file) {
+            imageUrl = path.join('/Assets', req.file.filename);
+        }
+
+        existingExchange.exchangeName = exchangeName || existingExchange.exchangeName;
+        existingExchange.description = description || existingExchange.description;
+        if (imageUrl) {
+            existingExchange.imageUrl = imageUrl;
+        }
+
+        const updatedExchange = await existingExchange.save();
+
+        res.status(200).json(updatedExchange);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to update exchange.' });
+    }
+});
+
+
+
 module.exports =
 {
     createExchange,
     getExchange,
-    DeleteExchange
+    DeleteExchange,
+    getExchangeById,
+    Edit_exchange
 };
