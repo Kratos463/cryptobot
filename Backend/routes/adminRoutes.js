@@ -18,6 +18,8 @@ const {
     updateExchangeStatus,
     getActiveExchanges } = require('../controllers/Admin_Controllers/ExchangeController')
 
+    const {UserList,Block_user} = require('../controllers/Admin_Controllers/userController')
+
 const router = Router();
 
 router.post('/login', AdminLogin);
@@ -39,5 +41,9 @@ router.get('/get_exchange/:id', getExchangeById);
 router.put('/Edit_exchange', Edit_exchange);
 router.put('/update_exchange_status/:id', updateExchangeStatus);
 router.get('/get_exchanges',getActiveExchanges);
+
+// -----------user Routes----------------
+router.get('/users',UserList);
+router.put('/block_user/:id',Block_user)
 
 module.exports = router

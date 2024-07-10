@@ -77,6 +77,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Bot',
     }],
+    isBlock:{
+        type:Boolean,
+        default :false,
+    }
 });
 
 // Middleware to hash the password before saving
