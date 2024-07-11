@@ -9,6 +9,7 @@ function Sidebar() {
                         <img src='/Assets/cryptobotLogo.png' alt='Cryptobot Logo' width={130} height={110} />
                     </div>
                     <ul className="mt-12">
+                        <Link href='/Admin/dashboard'>
                         <li className="flex w-full justify-between text-gray-600 hover:text-gray-300 hover:bg-indigo-800 cursor-pointer items-center py-3 px-8">
                             <div className="flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-grid" width={18} height={18} viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -21,6 +22,7 @@ function Sidebar() {
                                 <span className="text-sm  ml-2">Dashboard</span>
                             </div>
                         </li>
+                        </Link>
                         <Link href='/Admin/User/Users'>
                             <li className="flex w-full justify-between text-gray-600 hover:text-gray-300 hover:bg-indigo-800 cursor-pointer items-center px-8 py-3">
                                 <div className="flex items-center">

@@ -11,7 +11,7 @@ function Header() {
     const [style, setStyle] = useState(initialStyle);
     const [dropDown, setDropDown] = useState(false);
     const [text, setText] = useState("");
-    const [dropdownOpen, setDropdownOpen] = useState(false);
+    // const [dropdownOpen, setDropdownOpen] = useState(false);
     const { logout } = useContext(AuthContext);
     const [selected, setSelected] = useState(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
