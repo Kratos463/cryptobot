@@ -15,6 +15,7 @@ const generateEchostr = () => {
 // -----------Placing  order in lBank---------
 
 const placeLBankOrder = async (apiKey, apiSecret, orderPayload) => {
+   
     try {
         const timestamp = Date.now().toString();
         const echostr = generateEchostr();

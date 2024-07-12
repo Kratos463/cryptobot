@@ -5,7 +5,9 @@ const { testCoinDCXApiConnection } = require('../Services/coindcxExchange');
 const { testBingXApiConnection } = require('../Services/bingxExchange');
 const { testBitvenusApiConnection } = require('../Services/bitvenusExchange');
 const { testLBankApiConnection } = require('../Services/lbankExchange');
-const {tesBinanceApiConnection} = require('../Services/binanceExchange')
+const {testBinanceApiConnection} = require('../Services/binanceExchange');
+const {testDeepcoinApiConnection} = require('../Services/deepcoinExchange');
+const {testXtApiConnection} = require('../Services/xt.comExchange');
 // const {getAccountInformation} = require('../utils/GetAccountinfo')
 
 
@@ -31,7 +33,11 @@ const Apikeysave = asyncHandler(async (req, res) => {
     } else if (exchangeName === 'LBank') {
         testResult = await testLBankApiConnection(apiKey, apiSecret);
     }else if (exchangeName === 'Binance') {
-        testResult = await tesBinanceApiConnection(apiKey, apiSecret);
+        testResult = await testBinanceApiConnection(apiKey, apiSecret);
+    }else if (exchangeName === 'Deepcoin') {
+        testResult = await testDeepcoinApiConnection(apiKey, apiSecret);
+    }else if (exchangeName === 'XT.COM') {
+        testResult = await testXtApiConnection(apiKey, apiSecret);
     }
     
     else {

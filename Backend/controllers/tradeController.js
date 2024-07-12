@@ -20,6 +20,7 @@ const handleWebhook = asyncHandler(async (req, res) => {
         }
 
         const { userId, botId } = mapping;
+        
 
         // Get details from the webhook URL
         const { symbol,
@@ -40,6 +41,7 @@ const handleWebhook = asyncHandler(async (req, res) => {
             return res.status(404).send('Bot not found');
         }
         const { exchangeConfig, category, isLeverage } = bot;
+        
 
         // Get the exchange API key and secret
         const { apiKey, apiSecret, exchangeName } = await findExchangeConfigbyId(exchangeConfig);
