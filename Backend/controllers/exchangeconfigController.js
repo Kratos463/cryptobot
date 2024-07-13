@@ -8,6 +8,7 @@ const { testLBankApiConnection } = require('../Services/lbankExchange');
 const {testBinanceApiConnection} = require('../Services/binanceExchange');
 const {testDeepcoinApiConnection} = require('../Services/deepcoinExchange');
 const {testXtApiConnection} = require('../Services/xt.comExchange');
+const {testTokocryptoApiConnection} = require('../Services/tokocryptoExchange');
 // const {getAccountInformation} = require('../utils/GetAccountinfo')
 
 
@@ -38,6 +39,8 @@ const Apikeysave = asyncHandler(async (req, res) => {
         testResult = await testDeepcoinApiConnection(apiKey, apiSecret);
     }else if (exchangeName === 'XT.COM') {
         testResult = await testXtApiConnection(apiKey, apiSecret);
+    }else if (exchangeName === 'Tokocrypto') {
+        testResult = await testTokocryptoApiConnection(apiKey, apiSecret);
     }
     
     else {
