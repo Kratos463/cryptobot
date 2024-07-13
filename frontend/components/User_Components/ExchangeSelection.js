@@ -42,7 +42,7 @@ function ExchangeSelection() {
     };
 
     return (
-        <div className="fixed w-full h-full flex items-center justify-center">
+        <div className=" w-full h-full flex items-center justify-center">
             <div className="flex flex-col items-center justify-center">
                 <div className="shadow rounded-lg w-full max-w-[1200px] p-10 mt-4 mb-12">
                     <p tabIndex={0} role="heading" aria-label="Select Exchange" className="text-2xl font-bold leading-6 text-white text-center mb-8 mt-12">Select Exchange</p>
