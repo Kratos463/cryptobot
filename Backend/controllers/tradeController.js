@@ -5,7 +5,8 @@ const ShortIdMapping = require('../model/shortIdMapping');
 const { placeBybitOrder,
     placeCoinDCXOrder,
     placeBingXOrder, } = require('../helpers/orderHelper');
-const { placeLBankOrder } = require('../helpers/lbankHelper')
+const { placeLBankOrder } = require('../helpers/lbankHelper');
+const {placeXT_COMorder} = require('../helpers/XT.comHelper')
 
 // -------Handling the webhook url----------------
 
@@ -32,7 +33,8 @@ const handleWebhook = asyncHandler(async (req, res) => {
             takeProfit,
             positionSide,
             type,
-            quantity, } = req.body;
+            quantity,
+            bizType } = req.body;
 
         const bot = await Bot.findOne({ _id: botId });
 
@@ -62,6 +64,7 @@ const handleWebhook = asyncHandler(async (req, res) => {
             quantity,
             timeInForce: 'GTC',
             positionIdx: 0,
+            bizType
         };
 
         let response;
@@ -73,18 +76,20 @@ const handleWebhook = asyncHandler(async (req, res) => {
             response = await placeBingXOrder(apiKey, apiSecret, orderPayload);
         } else if (exchangeName === 'LBank') {
             response = await placeLBankOrder(apiKey, apiSecret, orderPayload);
+        } else if (exchangeName === 'XT.COM') {
+            response = await placeXT_COMorder(apiKey, apiSecret, orderPayload);
         }
         else {
             return res.status(400).send('Unsupported exchange');
         }
-        console.log('LBank API response:', response.data);
+       
 
         if (response.data.success === true) {
             console.log('Order placed successfully:', response.data);
-            return res.status(200).json({ success: true, message: 'Order placed successfully on LBank', data: response.data });
+            return res.status(200).json({ success: true, message: 'Order placed successfully ', data: response.data });
         } else {
             console.log('Failed to place order:', response.data.msg || 'Unknown error');
-            return res.status(400).json({ success: false, message: response.data.msg || 'Failed to place order on LBank', data: response.data });
+            return res.status(400).json({ success: false, message: response.data.msg || 'Failed to place order ', data: response.data });
         }
         
     } catch (error) {
