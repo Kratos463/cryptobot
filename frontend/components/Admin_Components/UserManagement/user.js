@@ -4,6 +4,8 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import { useRouter } from 'next/router';
 import { MdVerified } from "react-icons/md";
+import { IoCloseCircle } from "react-icons/io5";
+
 
 
 
@@ -234,7 +236,7 @@ function user() {
                                             {user.emailVerified ? (
                                                 <MdVerified style={{ color: 'green' }} />
                                             ) : (
-                                                <MdVerified style={{ color: 'red' }} />
+                                                <IoCloseCircle style={{ color: 'red' }} />
                                             )}
                                         </p>
                                     </td>

@@ -25,9 +25,9 @@ function Header() {
         }
     };
 
-    const toggleDropdown = () => {
-        setDropdownOpen(!dropdownOpen);
-    };
+    // const toggleDropdown = () => {
+    //     setDropdownOpen(!dropdownOpen);
+    // };
 
     const router = useRouter();
 
@@ -86,19 +86,19 @@ function Header() {
                     <div className="flex items-center space-x-3 lg:pr-16 pr-6">
                         <img src='/Assets/cryptobotLogo.png' alt='Cryptobot Logo' width={110} height={95} />
                     </div>
-                    <ul className="hidden md:flex flex-auto space-x-2 pl-48 pt-2">
+                    <ul className="hidden md:flex flex-auto space-x-2 pl-56 pt-2">
                         {menuItems.map((item, index) => (
                             <li
                                 key={index}
                                 onClick={() => handleMenuItemClick(index, item.path)}
-                                className={`${isActiveMenuItem(item.path) ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-4`}
+                                className={`${isActiveMenuItem(item.path) ? 'text-white' : 'text-gray-400'} cursor-pointer text-lg leading-5 pl-4`}
                             >
                                 {item.text}
                             </li>
                         ))}
                         <li
                             onClick={() => handleItemClick(4)}
-                            className={`${selected === 4 ? 'text-white' : 'text-gray-600'} cursor-pointer text-m leading-5 pl-4 relative`}
+                            className={`${selected === 4 ? 'text-white' : 'text-gray-400'} cursor-pointer text-m leading-5 pl-4 relative`}
                         >
                             Settings
                             {isDropdownOpen && (
