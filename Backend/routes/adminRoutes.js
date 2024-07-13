@@ -46,4 +46,5 @@ router.get('/get_exchanges',getActiveExchanges);
 router.get('/users',UserList);
 router.put('/block_user/:id',Block_user)
 
+
 module.exports = router

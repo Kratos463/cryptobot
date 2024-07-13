@@ -6,7 +6,8 @@ const { placeBybitOrder,
     placeCoinDCXOrder,
     placeBingXOrder, } = require('../helpers/orderHelper');
 const { placeLBankOrder } = require('../helpers/lbankHelper');
-const {placeXT_COMorder} = require('../helpers/XT.comHelper')
+const {placeXT_COMorder} = require('../helpers/XT.comHelper');
+const {placeTokocryptoOrder} = require('../helpers/tokocryptoHelper');
 
 // -------Handling the webhook url----------------
 
@@ -62,9 +63,11 @@ const handleWebhook = asyncHandler(async (req, res) => {
             positionSide,
             type,
             quantity,
-            timeInForce: 'GTC',
+            timeInForce: '1',
             positionIdx: 0,
-            bizType
+            bizType,
+            timestamp: Date.now(),
+
         };
 
         let response;
@@ -78,11 +81,13 @@ const handleWebhook = asyncHandler(async (req, res) => {
             response = await placeLBankOrder(apiKey, apiSecret, orderPayload);
         } else if (exchangeName === 'XT.COM') {
             response = await placeXT_COMorder(apiKey, apiSecret, orderPayload);
+        } else if (exchangeName === 'Tokocrypto') {
+            response = await placeTokocryptoOrder(apiKey, apiSecret, orderPayload);
         }
         else {
             return res.status(400).send('Unsupported exchange');
         }
-       
+        
 
         if (response.data.success === true) {
             console.log('Order placed successfully:', response.data);

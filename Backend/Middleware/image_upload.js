@@ -18,7 +18,7 @@ const upload = multer({
     }
 }).single('image'); // 'image' is the field name in the form
 
-// Check file type
+
 function checkFileType(file, cb) {
     // Allowed file extensions
     const filetypes = /jpeg|jpg|png|gif/;
