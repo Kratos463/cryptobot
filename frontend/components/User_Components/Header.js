@@ -43,24 +43,24 @@ function Header() {
     const handleProfile = () => {
         router.push('/Profile/ProfileDashboard');
     };
-    const handleBot = () => {
-        router.push('/page/Mybots');
-    };
+    // const handleBot = () => {
+    //     router.push('/page/Mybots');
+    // };
 
-    const handleExchanges = () => {
-        router.push('/page/MyExchanges')
-    }
+    // const handleExchanges = () => {
+    //     router.push('/page/MyExchanges')
+    // }
 
-    const selectMenuItem = (index) => {
-        let newArr = [...initialStyle];
-        newArr[index] = true;
-        setStyle(newArr);
-    };
+    // const selectMenuItem = (index) => {
+    //     let newArr = [...initialStyle];
+    //     newArr[index] = true;
+    //     setStyle(newArr);
+    // };
 
-    const setSelectedText = (txt) => {
-        setText(txt);
-        setDropDown(true);
-    };
+    // const setSelectedText = (txt) => {
+    //     setText(txt);
+    //     setDropDown(true);
+    // };
 
     const menuItems = [
         { text: 'Home', path: '/page/Home' },
