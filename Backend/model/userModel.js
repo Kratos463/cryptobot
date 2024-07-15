@@ -80,6 +80,10 @@ const userSchema = new mongoose.Schema({
     isBlock:{
         type:Boolean,
         default :false,
+    },
+    isActive:{
+        type:Boolean,
+        default:false,
     }
 });
 

@@ -17,7 +17,7 @@ router.get('/verify-email', verifyEmail)
 router.post('/register', registerUser)
 router.post('/login', loginUser)
 router.get('/userData', verifyToken, userData)
-router.post('/logout', logout)
+router.post('/logout',verifyToken, logout)
 router.put('/update_user/:id', updateUserProfile);
 
 

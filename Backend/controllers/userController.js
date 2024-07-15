@@ -130,8 +130,8 @@ const loginUser = asyncHandler(async (req, res) => {
     if (!user) {
         return res.status(401).json({ message: 'Invalid email or password' });
     }
-    if(user.isBlock){
-        return res.status(401).json({message:"Accesss denied"})
+    if (user.isBlock) {
+        return res.status(401).json({ message: "Accesss denied" })
     }
     if (!user.emailVerified) {
         return res.status(401).json({ message: 'Please verify your email before logging in' });
@@ -140,6 +140,9 @@ const loginUser = asyncHandler(async (req, res) => {
     if (!isMatch) {
         return res.status(401).json({ message: 'Invalid email or password' });
     }
+    user.isActive = true;
+    await user.save();
+
     // Generate JWT token
     const token = jwt.sign(
         { userId: user._id, email: user.email },
@@ -176,9 +179,17 @@ const userData = (req, res) => {
 // ------------Logout----------------
 
 const logout = asyncHandler(async (req, res) => {
-    res.status(200).json({ message: 'Logged out successfully' });
 
-})
+    const { userId } = req.user;
+    const user = await User.findById(userId);
+      if (!user) {
+        return res.status(401).json({ message: 'User not found' });
+    }
+    user.isActive = false;
+    await user.save();
+
+    res.status(200).json({ message: 'Logged out successfully' });
+});
 
 
 // --------Update user profile---------------
