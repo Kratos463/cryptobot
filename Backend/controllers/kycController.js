@@ -3,12 +3,8 @@ const User = require('../model/userModel');
 const qrcode = require('qrcode-svg');
 const OTPAuth = require('otpauth');
 
-
-// -------Generate Secret key of for authentication ----------
-
-
 const generateSecret = asyncHandler(async (req, res) => {
-    const userId = req.user.userId; 
+    const userId = req.user.userId;
 
     try {
         const user = await User.findOne({ _id: userId });
@@ -24,15 +20,12 @@ const generateSecret = asyncHandler(async (req, res) => {
             });
         }
 
-        // Generate a new secret key
         const secret = new OTPAuth.Secret({ issuer: 'Cryptobot' });
-        user.twofaSecret = secret.base32; 
+        user.twofaSecret = secret.base32;
         await user.save();
 
-        // Generate TOTP with the secret key
         const totp = new OTPAuth.TOTP({ secret, issuer: 'Cryptobot', label: user.email });
 
-        // Generate QR code SVG
         const qrCode = new qrcode({
             content: totp.toString(),
             padding: 4,
@@ -42,7 +35,7 @@ const generateSecret = asyncHandler(async (req, res) => {
             background: '#ffffff',
         });
 
-        const qrImageDataUrl = qrCode.svg(); 
+        const qrImageDataUrl = qrCode.svg();
 
         return res.json({
             message: '2FA secret generation successful',
@@ -56,12 +49,11 @@ const generateSecret = asyncHandler(async (req, res) => {
     }
 });
 
-// --------verify the otp by authenticator-------------
-
 const verify_otp = asyncHandler(async (req, res) => {
+    
     const userId = req.user.userId;
     const { otp } = req.body;
-
+    
     try {
         const user = await User.findOne({ _id: userId });
 
@@ -73,27 +65,27 @@ const verify_otp = asyncHandler(async (req, res) => {
             return res.status(400).json({ message: '2FA not set up for this user' });
         }
 
-        // Initialize TOTP with the user's secret
+        const secret = OTPAuth.Secret.fromBase32(user.twofaSecret);
+
         const totp = new OTPAuth.TOTP({
-            secret: user.twofaSecret,
+            secret: secret,
         });
 
-        // Verify the OTP token
+        const generatedToken = totp.generate();
+
         const isValid = totp.validate({
             token: otp,
-            window: 1, // Specify the allowable time window (in steps) for token validation
+            window: 1,
         });
-
-        if (!isValid) {
+        
+        if (isValid === null) {
             return res.status(400).json({ message: 'Invalid OTP token' });
         }
-
-        
-        user.twofaEnabled = true;
+        user.is2FAEnabled = true;
         await user.save();
-
+       
         return res.json({
-            message: '2FA verification successful',
+            success: '2FA verification successful',
             twofaEnabled: user.twofaEnabled,
         });
     } catch (error) {
@@ -101,7 +93,6 @@ const verify_otp = asyncHandler(async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 });
-
 
 module.exports = {
     generateSecret,

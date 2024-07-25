@@ -12,7 +12,11 @@ const {placeTokocryptoOrder} = require('../helpers/tokocryptoHelper');
 // -------Handling the webhook url----------------
 
 const handleWebhook = asyncHandler(async (req, res) => {
+    console.log("reached in handle webhook....")
     const { shortId } = req.params;
+    const {alertName,symbol,type,price,quantity} = req.body;
+    console.log(alertName,symbol,type,price,quantity);
+    console.log(shortId);
 
     try {
         // Find the bot ID and user ID by the mapping
@@ -38,6 +42,7 @@ const handleWebhook = asyncHandler(async (req, res) => {
             bizType } = req.body;
 
         const bot = await Bot.findOne({ _id: botId });
+        console.log(bot)
 
         if (!bot) {
             console.log("Bot not found..");

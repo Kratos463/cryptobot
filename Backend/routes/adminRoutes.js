@@ -17,8 +17,7 @@ const {
     Edit_exchange,
     updateExchangeStatus,
     getActiveExchanges } = require('../controllers/Admin_Controllers/ExchangeController')
-
-    const {UserList,Block_user} = require('../controllers/Admin_Controllers/userController')
+const {UserList,Block_user} = require('../controllers/Admin_Controllers/userController')
 
 const router = Router();
 

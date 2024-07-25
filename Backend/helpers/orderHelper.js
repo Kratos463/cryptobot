@@ -93,8 +93,7 @@ const placeCoinDCXOrder = async (apiKey, apiSecret, orderPayload) => {
 
 const placeBingXOrder = async (apiKey, apiSecret, orderPayload) => {
     try {
-        console.log("Reached here...");
-
+        
         // Fetch the server time
         const serverTimeUrl = `${process.env.BINGX_API_BASE_URL}/openApi/swap/v2/server/time`;
         const serverTimeResponse = await axios.get(serverTimeUrl);
