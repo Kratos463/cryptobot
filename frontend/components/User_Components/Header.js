@@ -91,7 +91,7 @@ function Header() {
                             <li
                                 key={index}
                                 onClick={() => handleMenuItemClick(index, item.path)}
-                                className={`${isActiveMenuItem(item.path) ? 'text-white' : 'text-gray-400'} cursor-pointer text-lg leading-5 pl-4`}
+                                className={`${isActiveMenuItem(item.path) ? 'text-white' : 'text-gray-400'} cursor-pointer text-m leading-5 pl-4`}
                             >
                                 {item.text}
                             </li>

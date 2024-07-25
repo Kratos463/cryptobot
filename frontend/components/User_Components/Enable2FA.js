@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaCopy } from "react-icons/fa";
-import QRCode from 'qrcode';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+
 
 function Enable2FA() {
     const [code, setCode] = useState('');
     const [showSuccess, setShowSuccess] = useState(false);
     const [secretKey, setSecretKey] = useState('');
-    const [uri, setUri] = useState('');
-
+    const [qrCodeUrl, setQrCodeUrl] = useState('');
 
     const generateSecretKey = async () => {
         const token = localStorage.getItem('token');
@@ -25,13 +26,12 @@ function Enable2FA() {
 
             const { secret, qrImageDataUrl } = response.data;
             setSecretKey(secret);
-            setUri(qrImageDataUrl);
-            
+            setQrCodeUrl(qrImageDataUrl);
+
         } catch (error) {
             console.error('Error generating secret key:', error);
         }
     };
-
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(secretKey);
@@ -48,7 +48,7 @@ function Enable2FA() {
             console.error('No token found in localStorage');
             return;
         }
-    
+
         try {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/kyc/2fa_verify`, {
                 otp: code
@@ -57,18 +57,21 @@ function Enable2FA() {
                     Authorization: `Bearer ${token}`
                 }
             });
-    
+            console.log(response)
+
             if (response.data.success) {
                 setShowSuccess(true);
+                toast.success('2FA enabled successfully')
                 console.log('2FA enabled successfully!');
             } else {
+                toast.error('Invalid verification code. Please try again.')
                 console.error('Invalid verification code. Please try again.');
             }
         } catch (error) {
             console.error('Error verifying 2FA code:', error);
         }
     };
-    
+
     useEffect(() => {
         generateSecretKey();
     }, []);
@@ -87,9 +90,8 @@ function Enable2FA() {
                     </ul>
                 </div>
                 <div className="w-full md:w-[30%] mb-4 pl-4 flex items-center justify-center">
-                    <div className="relative w-22 h-22" dangerouslySetInnerHTML={{ __html: uri }} />
-                    </div>
-                    
+                    {qrCodeUrl && <img src={`data:image/svg+xml;base64,${btoa(qrCodeUrl)}`} alt="QR Code" />}
+                </div>
             </div>
 
             <div className="w-full mb-4 flex items-center bg-white rounded-md px-4 py-2">
